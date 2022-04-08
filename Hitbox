@@ -1,0 +1,10 @@
+while true do
+   pcall(function()
+   wait()
+for i,v in next, game:GetService("Workspace").Ignore.Zombies:GetChildren() do
+
+v.HumanoidRootPart.Size = Vector3.new(150,150,150)
+v.HumanoidRootPart.CanCollide = false
+end
+end)
+end
