@@ -572,9 +572,9 @@ function loadGUI()
     
     local Section = Settings:NewSection("UI Settings")
     
-    Section:NewKeybind("Bind", "Keybind UI", Enum.KeyCode.RightCtrl, function()
+    local Balls = Section:NewKeybind("Bind", "Keybind UI", Enum.KeyCode.RightCtrl, function()
 	Library:ToggleUI()
-end)
+ end)
 
     
     ChartDropdown:Refresh(listfiles("FunkyChart/Charts/"))
