@@ -1,5 +1,11 @@
 -- ez script copy and paste yknow i'm dumbass & i'm lazy lmao
 local args = {
+    [1] = "THANKSMARIO"
+}
+
+game:GetService("ReplicatedStorage").Events.Codes:InvokeServer(unpack(args))
+
+local args = {
     [1] = "HOLIDAY"
 }
 
