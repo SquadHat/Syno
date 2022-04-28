@@ -18,7 +18,7 @@ Balls:NewButton("AFK", "Permanently AFK Tag", function()
     wait(1.2)
     Star:SetCore("SendNotification", {
     Title = "Instruction";
-    Text = "Wait 10 Seconds";
+    Text = "Wait Untill AFK Tag Showed up";
     Icon = "rbxassetid://346007524";
     Duration = 6;
     })
