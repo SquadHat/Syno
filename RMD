@@ -1,3 +1,5 @@
+-- yes no obfuscate because i'm lazy
+
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
 
 local Window = Library.CreateLib("RMD | Rate My Avatar", "GrapeTheme")
