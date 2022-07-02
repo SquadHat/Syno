@@ -1,4 +1,10 @@
--- ez script copy and paste yknow i'm dumbass & i'm lazy lmao
+-- so what the fuck 1
+local args = {
+    [1] = "INDIECROSS"
+}
+
+game:GetService("ReplicatedStorage").Events.Codes:InvokeServer(unpack(args))
+
 local args = {
     [1] = "THANKSMARIO"
 }
