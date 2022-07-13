@@ -1,0 +1,143 @@
+--[[ Its source open, just steal it if you want to --]]
+
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+
+local Window = Library.CreateLib("Clicker Simulator", "Sentinel")
+
+-- Tabs --
+
+local Main = Window:NewTab("General")
+local Eggs = Window:NewTab("Eggs")
+local Rebirth = Window:NewTab("Rebirth")
+
+-- Main --
+
+local Ass = Main:NewSection("Random Stuff")
+
+Ass:NewToggle("Auto Clicker", "Automatically click for you", function(state)
+    if state then
+_G.Click = true
+while _G.Click and wait(0.45) do
+local args = {
+        [1] = {
+            ["manual"] = {
+                ["9e9"] = 9e9
+            }
+        }
+    }
+    
+game:GetService("ReplicatedStorage").Clickerr:InvokeServer(unpack(args))
+end
+    else
+    _G.Click = false
+    end
+end)
+Ass:NewToggle("Auto Equip Best Pets", "You know what it does", function(state)
+    if state then
+        _G.Equip = true
+        while _G.Equip and wait(0.10) do
+game:GetService("ReplicatedStorage").Events.Client.petsTools.equipBest:FireServer()
+        end
+else 
+        _G.Equip = false
+    end
+end)
+
+Ass:NewToggle("Auto Collect Gifts", "Gifts", function(state)
+    if state then
+    _G.Gift = true
+    while _G.Gift and wait(0.10) do
+game:GetService("ReplicatedStorage").Events.Client.collectGifts:FireServer()
+    end
+    else
+    _G.Gift = false
+    end
+end)
+
+Ass:NewToggle("Auto Buy Double Jumps", "Double jumps", function(state)
+    if state then
+
+    else
+
+    end
+end)
+
+-- Rebirth --
+
+local Reb = Rebirth:NewSection("Rebirth")
+
+Reb:NewToggle("Rebirth 1", "Rebirth only 1", function(state)
+    if state then
+        _G.Reb = true
+        while _G.Reb and wait(0.10) do
+local args = {
+    [1] = 1,
+    [2] = false,
+    [3] = false
+}
+
+game:GetService("ReplicatedStorage").Events.Client.requestRebirth:FireServer(unpack(args))
+end
+    else
+        _G.Reb = false
+    end
+end)
+
+Reb:NewToggle("Rebirth 5", "Rebirth only 5", function(state)
+    if state then
+        _G.Reb5 = true
+        while _G.Reb5 and wait(0.10) do
+        local args = {
+            [1] = 5,
+            [2] = false,
+            [3] = false
+        }
+        
+        game:GetService("ReplicatedStorage").Events.Client.requestRebirth:FireServer(unpack(args))
+        end
+    else
+        _G.Reb5 = false
+    end
+end)
+
+Reb:NewToggle("Rebirth 10", "Rebirth only 10", function(state)
+    if state then
+        _G.Reb10 = true
+        while _G.Reb10 and wait (0.10) do
+        local args = {
+            [1] = 10,
+            [2] = false,
+            [3] = false
+        }
+        
+        game:GetService("ReplicatedStorage").Events.Client.requestRebirth:FireServer(unpack(args))
+        end
+    else
+        _G.Reb10 = false
+    end
+end)
+
+-- Eggs --
+
+local Egg = Eggs:NewSection("Eggs")
+
+Egg:NewDropdown("Basic Eggs", "Automatically Buy Eggs", {"Basic", "Earth", "Sun God", "Frozen Arctic", "Lava Dragon","Treasure", "Space Guardian", "Ice Cream", "Treeland", "Tropical", "Bee", "Galaxy", "Atlantis", "Steampunk", "Music", "Ocean", "Hacker", "Ice Age", "Egypt", "Tech", "Wild West", "Rome", "Samurai", "Dinosaur", "Mars", "Time", "Robot", "Chemical", "Flame Overlord", "Holographic", "Jungle", "Future", "Viking", "Beach", "Heaven", "Hell", "Swamp", "Sunken City", "Coral Reef", "Privateer"}, function(Gay)
+local args = {
+    [1] = workspace.Eggs:FindFirstChild(Gay),
+    [2] = false,
+    [3] = false
+}
+game:GetService("ReplicatedStorage").Events.Client.purchaseEgg2:InvokeServer(unpack(args))
+local args = {
+    [1] = workspace.Eggs(Gay),
+    [2] = false,
+    [3] = false
+}
+
+game:GetService("ReplicatedStorage").Events.Client.purchaseEgg2:InvokeServer(unpack(args))
+local args = {
+    [1] = workspace.Eggs(Gay),
+    [2] = false,
+    [3] = false
+}
+end)
