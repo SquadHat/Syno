@@ -95,10 +95,6 @@ local Emot = Emotes:NewSection("Quick Emotes")
 local Rep3 = game:GetService("ReplicatedStorage").Events.UI.Equip
 local Rep4 = game:GetService("ReplicatedStorage").Events.Emote
 
-Emot:NewKeybind("Swag Walk", "Swaggy", Enum.KeyCode.Two, function()
-Rep3:InvokeServer("Emotes", "SwagWalk")
-Rep4:FireServer("1")
-end)
 Emot:NewKeybind("Test", "Run", Enum.KeyCode.Three, function()
 Rep3:InvokeServer("Emotes", "Test")
 Rep4:FireServer("1")
