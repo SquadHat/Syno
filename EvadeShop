@@ -8,16 +8,7 @@ local Hotkey = Window:NewTab("Hotkey")
 
 local Use = Usables:NewSection("Items")
 local Rep = game:GetService("ReplicatedStorage").Events.UI.Purchase
-local Token = game:GetService("Players").LocalPlayer.PlayerGui.Menu.Left.Tokens.Cash
 
-Use:NewKeybind("Tokens", "Tell you amount of tokens you currently have", Enum.KeyCode.J, function()
-game.StarterGui:SetCore("SendNotification", {
-Title = "Current";
-Text = Token.Text;
-Icon = "rbxassetid://2541869220";
-Duration = 2;
-})
-end)
 Use:NewKeybind("Cola", "Cola", Enum.KeyCode.R, function()
 Rep:InvokeServer("Usables", "Cola")
 game.StarterGui:SetCore("SendNotification", {
