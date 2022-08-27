@@ -2,6 +2,7 @@ local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHept
 local Window = Library.CreateLib("Evade Shop", "Synapse")
 
 local Usables = Window:NewTab("Usables")
+local Emotes = Window:NewTab("Emotes")
 local Hotkey = Window:NewTab("Hotkey")
 
 -- Useable --
@@ -87,6 +88,48 @@ Icon = "rbxassetid://2541869220";
 Duration = 2;
 })
 end)
+
+-- Emotes --
+
+local Emot = Emotes:NewSection("Quick Emotes")
+local Rep3 = game:GetService("ReplicatedStorage").Events.UI.Equip
+local Rep4 = game:GetService("ReplicatedStorage").Events.Emote
+
+Emot:NewKeybind("Swag Walk", "Swaggy", Enum.KeyCode.Two, function()
+Rep3:InvokeServer("Emotes", "SwagWalk")
+Rep4:FireServer("1")
+end)
+Emot:NewKeybind("Test", "Run", Enum.KeyCode.Three, function()
+Rep3:InvokeServer("Emotes", "Test")
+Rep4:FireServer("1")
+end)
+Emot:NewKeybind("Aerobics", "Aerobics", Enum.KeyCode.Four, function()
+Rep3:InvokeServer("Emotes", "Aerobics")
+Rep4:FireServer("1")
+end)
+Emot:NewKeybind("Nostalgia", "Nostalgia", Enum.KeyCode.Six, function()
+Rep3:InvokeServer("Emotes", "Nostalgia")
+Rep4:FireServer("1")
+end)
+Emot:NewKeybind("BumperKart", "BumperKart", Enum.KeyCode.Seven, function()
+Rep3:InvokeServer("Emotes", "BumperKart")
+Rep4:FireServer("1")
+end)
+Emot:NewKeybind("Sleep", "Sleep", Enum.KeyCode.Eight, function()
+Rep3:InvokeServer("Emotes", "Sleep")
+Rep4:FireServer("1")
+end)
+Emot:NewKeybind("Gyrating", "Gyrating", Enum.KeyCode.Nine, function()
+Rep3:InvokeServer("Emotes", "Gyrating")
+Rep4:FireServer("1")
+end)
+Emot:NewKeybind("PBJT", "PBJT", Enum.KeyCode.Zero, function()
+Rep3:InvokeServer("Emotes", "PBJT")
+Rep4:FireServer("1")
+end)
+
+-- UI --
+
 Key:NewKeybind("UI", "Toggle", Enum.KeyCode.K, function()
 	Library:ToggleUI()
 end)
