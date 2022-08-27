@@ -18,7 +18,7 @@ Icon = "rbxassetid://2541869220";
 Duration = 1;
 })
 end)
-Use:NewKeybind("Barrier", "Barrier", Enum.KeyCode.T, function()
+Use:NewKeybind("Barrier", "Barrier", Enum.KeyCode.J, function()
 Rep:InvokeServer("Usables", "Barrier")
 game.StarterGui:SetCore("SendNotification", {
 Title = "Barrier";
@@ -27,7 +27,7 @@ Icon = "rbxassetid://2541869220";
 Duration = 1;
 })
 end)
-Use:NewKeybind("Beacon", "Beacon", Enum.KeyCode.Y, function()
+Use:NewKeybind("Beacon", "Beacon", Enum.KeyCode.N, function()
 Rep:InvokeServer("Usables", "Beacon")
 game.StarterGui:SetCore("SendNotification", {
 Title = "Beacon";
@@ -36,7 +36,7 @@ Icon = "rbxassetid://2541869220";
 Duration = 1;
 })
 end)
-Use:NewKeybind("Floodlight", "Floodlight", Enum.KeyCode.U, function()
+Use:NewKeybind("Floodlight", "Floodlight", Enum.KeyCode.M, function()
 Rep:InvokeServer("Usables", "Floodlight")
 game.StarterGui:SetCore("SendNotification", {
 Title = "Floodlight";
