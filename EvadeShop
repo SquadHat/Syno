@@ -1,0 +1,92 @@
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local Window = Library.CreateLib("Evade Shop", "Synapse")
+
+local Usables = Window:NewTab("Usables")
+local Hotkey = Window:NewTab("Hotkey")
+
+-- Useable --
+
+local Use = Usables:NewSection("HotKey Items")
+local Rep = game:GetService("ReplicatedStorage").Events.UI.Purchase
+
+Use:NewKeybind("Cola", "Cola", Enum.KeyCode.R, function()
+Rep:InvokeServer("Usables", "Cola")
+game.StarterGui:SetCore("SendNotification", {
+Title = "Cola";
+Text = "Purchased Cola!";
+Icon = "rbxassetid://2541869220";
+Duration = 1;
+})
+end)
+Use:NewKeybind("Barrier", "Barrier", Enum.KeyCode.T, function()
+Rep:InvokeServer("Usables", "Barrier")
+game.StarterGui:SetCore("SendNotification", {
+Title = "Barrier";
+Text = "Purchased Barrier!";
+Icon = "rbxassetid://2541869220";
+Duration = 1;
+})
+end)
+Use:NewKeybind("Beacon", "Beacon", Enum.KeyCode.Y, function()
+Rep:InvokeServer("Usables", "Beacon")
+game.StarterGui:SetCore("SendNotification", {
+Title = "Beacon";
+Text = "Purchased Beacon!";
+Icon = "rbxassetid://2541869220";
+Duration = 1;
+})
+end)
+Use:NewKeybind("Floodlight", "Floodlight", Enum.KeyCode.U, function()
+Rep:InvokeServer("Usables", "Floodlight")
+game.StarterGui:SetCore("SendNotification", {
+Title = "Floodlight";
+Text = "Purchased Floodlight!";
+Icon = "rbxassetid://2541869220";
+Duration = 1;
+})
+end)
+Use:NewKeybind("Sensor", "Sensor", Enum.KeyCode.B, function()
+Rep:InvokeServer("Usables", "Sensor")
+game.StarterGui:SetCore("SendNotification", {
+Title = "Sensor";
+Text = "Purchased Sensor!";
+Icon = "rbxassetid://2541869220";
+Duration = 1;
+})
+end)
+Use:NewKeybind("Speed Pad", "Speed Pad", Enum.KeyCode.C, function()
+Rep:InvokeServer("Usables", "SpeedPad")
+game.StarterGui:SetCore("SendNotification", {
+Title = "SpeedPad";
+Text = "Purchased SpeedPad!";
+Icon = "rbxassetid://2541869220";
+Duration = 1;
+})
+end)
+Use:NewKeybind("Landmine", "Landmine", Enum.KeyCode.V, function()
+Rep:InvokeServer("Usables", "Landmine")
+game.StarterGui:SetCore("SendNotification", {
+Title = "Landmine";
+Text = "Purchased Landmine!";
+Icon = "rbxassetid://2541869220";
+Duration = 1;
+})
+end)
+
+-- Hotkey Items --
+
+local Key = Hotkey:NewSection("Hotkey")
+local Rep2 = game:GetService("ReplicatedStorage").Events.UseUsable
+
+Key:NewKeybind("Use Cola", "Cola", Enum.KeyCode.E, function()
+Rep2:FireServer("Cola")
+game.StarterGui:SetCore("SendNotification", {
+Title = "Consuming Cola";
+Text = "Using Cola!";
+Icon = "rbxassetid://2541869220";
+Duration = 2;
+})
+end)
+Key:NewKeybind("UI", "Toggle", Enum.KeyCode.K, function()
+	Library:ToggleUI()
+end)
