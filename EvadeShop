@@ -78,7 +78,7 @@ end)
 local Key = Hotkey:NewSection("Hotkey")
 local Rep2 = game:GetService("ReplicatedStorage").Events.UseUsable
 
-Key:NewKeybind("Use Cola", "Cola", Enum.KeyCode.E, function()
+Key:NewKeybind("Use Cola", "Cola", Enum.KeyCode.X, function()
 Rep2:FireServer("Cola")
 game.StarterGui:SetCore("SendNotification", {
 Title = "Consuming Cola";
