@@ -9,7 +9,7 @@ local Hotkey = Window:NewTab("Hotkey")
 local Use = Usables:NewSection("Items")
 local Rep = game:GetService("ReplicatedStorage").Events.UI.Purchase
 
-Use:NewKeybind("Cola", "Cola", Enum.KeyCode.R, function()
+Use:NewKeybind("Cola", "Cola", Enum.KeyCode.C, function()
 Rep:InvokeServer("Usables", "Cola")
 game.StarterGui:SetCore("SendNotification", {
 Title = "Cola";
