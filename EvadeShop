@@ -95,12 +95,12 @@ local Emot = Emotes:NewSection("Quick Emotes")
 local Rep3 = game:GetService("ReplicatedStorage").Events.UI.Equip
 local Rep4 = game:GetService("ReplicatedStorage").Events.Emote
 
-Emot:NewKeybind("Test", "Run", Enum.KeyCode.Three, function()
-Rep3:InvokeServer("Emotes", "Test")
+Emot:NewKeybind("Zen Serenity", "Zen", Enum.KeyCode.Three, function()
+Rep3:InvokeServer("Emotes", "ZenSerenity")
 Rep4:FireServer("1")
 end)
-Emot:NewKeybind("Aerobics", "Aerobics", Enum.KeyCode.Four, function()
-Rep3:InvokeServer("Emotes", "Aerobics")
+Emot:NewKeybind("Gmod Dance", "Gmod", Enum.KeyCode.Four, function()
+Rep3:InvokeServer("Emotes", "Gmod")
 Rep4:FireServer("1")
 end)
 Emot:NewKeybind("Penguin Dance", "Penguin", Enum.KeyCode.Five, function()
