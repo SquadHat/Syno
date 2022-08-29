@@ -3,7 +3,7 @@ local Window = Library.CreateLib("Evade Shop", "Synapse")
 
 local Usables = Window:NewTab("Usables")
 local Emotes = Window:NewTab("Emotes")
-local Hotkey = Window:NewTab("Hotkey")
+local Hotkey = Window:NewTab("Hotkey"))
 
 -- Useable --
 
@@ -78,7 +78,8 @@ end)
 
 local Key = Hotkey:NewSection("Hotkey")
 local Rep2 = game:GetService("ReplicatedStorage").Events.UseUsable
-local Respawn = Events:FindFirstChild("Respawn")
+local Respawn = game:GetService("ReplicatedStorage").Events.Respawn
+
 
 Key:NewKeybind("Use Cola", "Cola", Enum.KeyCode.X, function()
 Rep2:FireServer("Cola")
