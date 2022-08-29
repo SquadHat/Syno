@@ -3,7 +3,7 @@ local Window = Library.CreateLib("Evade Shop", "Synapse")
 
 local Usables = Window:NewTab("Usables")
 local Emotes = Window:NewTab("Emotes")
-local Hotkey = Window:NewTab("Hotkey"))
+local Hotkey = Window:NewTab("Hotkey")
 
 -- Useable --
 
