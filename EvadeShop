@@ -90,7 +90,7 @@ Duration = 2;
 })
 end)
 Key:NewKeybind("Respawn", "Respawn While Downing", Enum.KeyCode.L, function()
-Respawn:FireServer();
+Respawn:FireServer()
 game.StarterGui:SetCore("SendNotification", {
 Title = "Respawn";
 Text = "Respawning!";
