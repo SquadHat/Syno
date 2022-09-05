@@ -73,6 +73,15 @@ Icon = "rbxassetid://2541869220";
 Duration = 1;
 })
 end)
+Use:NewButton("Teleporter", "Teleporter", function()
+Rep:InvokeServer("Usables", "Teleporter")
+game.StarterGui:SetCore("SendNotification", {
+Title = "Teleporter";
+Text = "Purchased Teleporter!";
+Icon = "rbxassetid://2541869220";
+Duration = 1;
+})
+end)
 
 -- Hotkey Items --
 
@@ -106,8 +115,8 @@ local Emot = Emotes:NewSection("Quick Emotes")
 local Rep3 = game:GetService("ReplicatedStorage").Events.UI.Equip
 local Rep4 = game:GetService("ReplicatedStorage").Events.Emote
 
-Emot:NewKeybind("Zen Serenity", "Zen", Enum.KeyCode.Three, function()
-Rep3:InvokeServer("Emotes", "ZenSerenity")
+Emot:NewKeybind("Crabby", "Crabby", Enum.KeyCode.Three, function()
+Rep3:InvokeServer("Emotes", "Crabby")
 Rep4:FireServer("1")
 end)
 Emot:NewKeybind("Gmod Dance", "Gmod", Enum.KeyCode.Four, function()
