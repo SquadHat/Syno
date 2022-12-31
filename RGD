@@ -21,6 +21,29 @@ end
 end
 end)
 
+-- Collect All Big Circuit if found
+
+local Mouse = game:GetService("Players").LocalPlayer:GetMouse()
+local Toggled = false
+local Keybind = "c"
+
+Mouse.KeyDown:Connect(function(Key)
+    if Key == Keybind then
+        if Toggled then
+            Toggled = false
+        else
+            Toggled = true
+            while Toggled and wait() do
+     for _,v in pairs(game:GetService("Workspace").BigCircuit:GetDescendants()) do
+if v:IsA("TouchTransmitter") then
+firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 0) --0 is touch
+            end
+        end
+    end
+end
+end
+end)
+
 -- Kill All Droids (Include All Droids)
 
 local player = game.Players.LocalPlayer
