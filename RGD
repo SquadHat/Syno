@@ -1,3 +1,22 @@
+-- Collect All Circuits
+
+local UIS=game:GetService'UserInputService'
+getgenv().KeyBind="R"--Has to be letters
+
+UIS.InputBegan:Connect(function(Key)
+     if Key.KeyCode==Enum.KeyCode[getgenv().KeyBind] and not UIS:GetFocusedTextBox() then
+while wait() do
+for _,v in pairs(game:GetService("Workspace").Circuit:GetDescendants()) do
+if v:IsA("TouchTransmitter") then
+firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 0) --0 is touch
+wait()
+firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 1) -- 1 is untouch
+end
+end
+end
+end
+end)
+
 -- Kill All Droids
 
 local player = game.Players.LocalPlayer
@@ -31,24 +50,3 @@ v.WalkSpeed = 0
 end
 end
 end
-
--- Collect All Cruits (Holdable)
-
-wait(2)
-
-local UIS=game:GetService'UserInputService'
-getgenv().KeyBind="R"--Has to be letters
-
-UIS.InputBegan:Connect(function(Key)
-     if Key.KeyCode==Enum.KeyCode[getgenv().KeyBind] and not UIS:GetFocusedTextBox() then
-while wait() do
-for _,v in pairs(game:GetService("Workspace").Circuit:GetDescendants()) do
-if v:IsA("TouchTransmitter") then
-firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 0) --0 is touch
-wait()
-firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 1) -- 1 is untouch
-end
-end
-end
-end
-end)
