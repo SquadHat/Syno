@@ -34,6 +34,8 @@ end
 
 -- Collect All Cruits (Holdable)
 
+wait(2)
+
 local UIS=game:GetService'UserInputService'
 getgenv().KeyBind="R"--Has to be letters
 
