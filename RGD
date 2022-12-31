@@ -17,7 +17,7 @@ end
 end
 end)
 
--- Kill All Droids
+-- Kill All Droids (Include All Droids)
 
 local player = game.Players.LocalPlayer
 local mouse = player:GetMouse()
@@ -39,7 +39,7 @@ end
 end
 end)
 
--- Kill All Droids Second
+-- Kill All Droids (Exclude Friendly Droid And Anti Droid)
 
 keybind = string.lower("r")
 
