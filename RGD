@@ -1,0 +1,52 @@
+-- Kill All Droids
+
+local player = game.Players.LocalPlayer
+local mouse = player:GetMouse()
+
+
+keybind = string.lower("e")
+
+
+
+mouse.KeyDown:connect(function(key)
+if key == keybind then
+for i,v in pairs(game.Workspace.Room.Enemies:GetDescendants()) do
+     if v:IsA("Humanoid") and v.Parent.Name ~= game.Players.LocalPlayer.Name then
+         v.Health = 0
+         end
+end
+end
+end)
+
+-- Walkspeed
+
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 30
+
+-- Droids Walkspeed
+
+while wait() do
+for i,v in pairs(game.Workspace.Room.Enemies:GetDescendants()) do
+if v:IsA("Humanoid") and v.Parent.Name ~= game.Players.LocalPlayer.Name then
+v.WalkSpeed = 0
+end
+end
+end
+
+-- Collect All Cruits (Holdable)
+
+local UIS=game:GetService'UserInputService'
+getgenv().KeyBind="R"--Has to be letters
+
+UIS.InputBegan:Connect(function(Key)
+     if Key.KeyCode==Enum.KeyCode[getgenv().KeyBind] and not UIS:GetFocusedTextBox() then
+while wait() do
+for _,v in pairs(game:GetService("Workspace").Circuit:GetDescendants()) do
+if v:IsA("TouchTransmitter") then
+firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 0) --0 is touch
+wait()
+firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 1) -- 1 is untouch
+end
+end
+end
+end
+end)
