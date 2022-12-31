@@ -1,7 +1,7 @@
 -- Collect All Circuits
 
 local UIS=game:GetService'UserInputService'
-getgenv().KeyBind="R"--Has to be letters
+getgenv().KeyBind="C"--Has to be letters
 
 UIS.InputBegan:Connect(function(Key)
      if Key.KeyCode==Enum.KeyCode[getgenv().KeyBind] and not UIS:GetFocusedTextBox() then
@@ -41,12 +41,12 @@ end)
 
 -- Kill All Droids (Exclude Friendly Droid And Anti Droid)
 
-keybind = string.lower("r")
-
+plr = game.Players.LocalPlayer
+mouse = plr:GetMouse()
 
 
 mouse.KeyDown:connect(function(key)
-if key == keybind then
+if key == "r" then
  for i,v in pairs(game.Workspace.Room.Enemies:GetDescendants()) do
      if v:IsA("Humanoid") and v.Parent.Name ~= game.Players.LocalPlayer.Name then
          v.Health = 0
@@ -55,9 +55,13 @@ end
 end
 end)
 
--- Walkspeed
+-- Walkspeed (not made by me this is the original thread https://v3rmillion.net/showthread.php?tid=1027601)
 
-game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 30
+game:GetService('Players').LocalPlayer.Chatted:Connect(function(message)
+   if string.find(message:lower(), '/e ws') then 
+       game:GetService('Players').LocalPlayer.Character:FindFirstChild('Humanoid').WalkSpeed = message:gsub('/e ws', '')
+   end
+end)
 
 -- Droids Walkspeed
 
