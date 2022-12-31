@@ -55,6 +55,39 @@ end
 end
 end)
 
+-- Kill Aura
+
+local Mouse = game:GetService("Players").LocalPlayer:GetMouse()
+local Toggled = false
+local Keybind = "g"
+
+Mouse.KeyDown:Connect(function(Key)
+    if Key == Keybind then
+        if Toggled then
+            Toggled = false
+game.StarterGui:SetCore("SendNotification", {
+Title = "KILLAURA";
+Text = "KillAura | OFF";
+Duration = 1;
+})
+        else
+            Toggled = true
+game.StarterGui:SetCore("SendNotification", {
+Title = "KILLAURA";
+Text = "KillAura | ON";
+Duration = 1;
+})
+            while Toggled and wait() do
+      for i, v in pairs(game:GetService("Workspace").Room.Enemies:GetDescendants()) do
+         if v:FindFirstChild("Enemy") then
+               v.Enemy.Health = 0
+           end
+       end
+   end
+end
+end
+end)
+
 -- Walkspeed (not made by me this is the original thread https://v3rmillion.net/showthread.php?tid=1027601)
 
 game:GetService('Players').LocalPlayer.Chatted:Connect(function(message)
