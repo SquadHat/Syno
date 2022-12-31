@@ -25,7 +25,7 @@ end)
 
 local Mouse = game:GetService("Players").LocalPlayer:GetMouse()
 local Toggled = false
-local Keybind = "c"
+local Keybind = "v"
 
 Mouse.KeyDown:Connect(function(Key)
     if Key == Keybind then
