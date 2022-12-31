@@ -23,16 +23,34 @@ local player = game.Players.LocalPlayer
 local mouse = player:GetMouse()
 
 
-keybind = string.lower("e")
+keybind = string.lower("t")
 
 
 
 mouse.KeyDown:connect(function(key)
 if key == keybind then
-for i,v in pairs(game.Workspace.Room.Enemies:GetDescendants()) do
+setsimulationradius(math.huge,math.huge)
+
+for i,v in pairs(game.Workspace:GetDescendants()) do
      if v:IsA("Humanoid") and v.Parent.Name ~= game.Players.LocalPlayer.Name then
          v.Health = 0
-         end
+end
+end
+end
+end)
+
+-- Kill All Droids Second
+
+keybind = string.lower("r")
+
+
+
+mouse.KeyDown:connect(function(key)
+if key == keybind then
+ for i,v in pairs(game.Workspace.Room.Enemies:GetDescendants()) do
+     if v:IsA("Humanoid") and v.Parent.Name ~= game.Players.LocalPlayer.Name then
+         v.Health = 0
+end
 end
 end
 end)
