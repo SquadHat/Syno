@@ -1,18 +1,22 @@
 -- Collect All Circuits
 
-local UIS=game:GetService'UserInputService'
-getgenv().KeyBind="C"--Has to be letters
+local Mouse = game:GetService("Players").LocalPlayer:GetMouse()
+local Toggled = false
+local Keybind = "c"
 
-UIS.InputBegan:Connect(function(Key)
-     if Key.KeyCode==Enum.KeyCode[getgenv().KeyBind] and not UIS:GetFocusedTextBox() then
-while wait() do
-for _,v in pairs(game:GetService("Workspace").Circuit:GetDescendants()) do
+Mouse.KeyDown:Connect(function(Key)
+    if Key == Keybind then
+        if Toggled then
+            Toggled = false
+        else
+            Toggled = true
+            while Toggled and wait() do
+     for _,v in pairs(game:GetService("Workspace").Circuit:GetDescendants()) do
 if v:IsA("TouchTransmitter") then
 firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 0) --0 is touch
-wait()
-firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 1) -- 1 is untouch
-end
-end
+            end
+        end
+    end
 end
 end
 end)
