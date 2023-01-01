@@ -1,19 +1,22 @@
 -- Collect All Circuits
 
-local Mouse = game:GetService("Players").LocalPlayer:GetMouse()
-local Toggled = false
-local Keybind = "c"
+local Key = "C"
+local Toggle = false
 
-Mouse.KeyDown:Connect(function(Key)
-    if Key == Keybind then
-            Toggled = true
-            while Toggled and wait() do
-     for _,v in pairs(game:GetService("Workspace").Circuit:GetDescendants()) do
-if v:IsA("TouchTransmitter") then
-firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 0) --0 is touch
-            end
-        end
+game:GetService("UserInputService").InputBegan:Connect(function(keyobject, stuffhappening)
+    if keyobject.KeyCode == Enum.KeyCode[Key] and not stuffhappening then 
+        Toggle = not Toggle
     end
+end)
+
+
+game:GetService('RunService').Stepped:connect(function()
+    if Toggle then
+for _,v in pairs(game:GetService("Workspace").Circuit:GetDescendants()) do
+if v:IsA("TouchTransmitter") then
+firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 0)
+    end
+end
 end
 end)
 
