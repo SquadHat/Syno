@@ -6,9 +6,6 @@ local Keybind = "c"
 
 Mouse.KeyDown:Connect(function(Key)
     if Key == Keybind then
-        if Toggled then
-            Toggled = false
-        else
             Toggled = true
             while Toggled and wait() do
      for _,v in pairs(game:GetService("Workspace").Circuit:GetDescendants()) do
@@ -17,7 +14,6 @@ firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent,
             end
         end
     end
-end
 end
 end)
 
