@@ -137,6 +137,22 @@ game:GetService('Players').LocalPlayer.Chatted:Connect(function(message)
    end
 end)
 
+-- Keybind Button
+
+local Mouse = game:GetService("Players").LocalPlayer:GetMouse()
+local Toggled = false
+local Keybind = "f"
+
+Mouse.KeyDown:Connect(function(Key)
+    if Key == Keybind then
+    for i,v in next, game:GetService("Workspace").Room.Enemies:GetDescendants()  do
+  if v:IsA'ClickDetector' then
+           fireclickdetector(v)
+           end
+           end
+           end
+           end)
+
 -- Droids Walkspeed
 
 while wait() do
