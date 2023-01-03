@@ -80,6 +80,22 @@ end
 end
 end)
 
+-- Half Health
+
+plr = game.Players.LocalPlayer
+mouse = plr:GetMouse()
+
+
+mouse.KeyDown:connect(function(key)
+if key == "z" then
+ for i,v in pairs(game.Workspace.Room.Enemies:GetDescendants()) do
+     if v:IsA("Humanoid") and v.Parent.Name ~= game.Players.LocalPlayer.Name then
+         v.Health = 10
+end
+end
+end
+end)
+
 -- Bypassed SimulationRadius (Original Thread: https://v3rmillion.net/showthread.php?tid=1100889)
 
 game["Run Service"].RenderStepped:connect(
