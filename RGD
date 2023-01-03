@@ -1,3 +1,10 @@
+game.StarterGui:SetCore("SendNotification", {
+    Title = 'LOADED';
+    Text = "Loaded RGD Script";
+    Icon = "rbxassetid://2541869220";
+    Duration = 4;
+})
+
 -- Collect All Circuits
 
 local Key = "C"
