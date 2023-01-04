@@ -49,7 +49,7 @@ end
 end
 end)
 
--- Kill All Droids (Include All Droids)
+-- Kill Passive Droids
 
 local player = game.Players.LocalPlayer
 local mouse = player:GetMouse()
