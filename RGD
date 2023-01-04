@@ -63,7 +63,7 @@ mouse.KeyDown:connect(function(key)
 if key == keybind then
 setsimulationradius(math.huge,math.huge)
 
-for i,v in pairs(game.Workspace:GetDescendants()) do
+for i,v in pairs(game.Workspace.PassiveDroids:GetDescendants()) do
      if v:IsA("Humanoid") and v.Parent.Name ~= game.Players.LocalPlayer.Name then
          v.Health = 0
 end
