@@ -1,8 +1,12 @@
 game.StarterGui:SetCore("SendNotification", {
-    Title = 'LOADED';
-    Text = "Loaded RGD Script";
+    Title = 'LOADED!';
+    Text = "R - Kill Hostile Droids
+            T - Kill All Droids
+            G - Kill Aura
+            C - Collect All Circuit
+            /e ws [Number] Walkspeed";
     Icon = "rbxassetid://2541869220";
-    Duration = 4;
+    Duration = 8;
 })
 
 -- Collect All Circuits
@@ -22,10 +26,14 @@ game:GetService('RunService').Stepped:connect(function()
 local checkPath = game.Workspace:GetDescendants()
 
 for i = 1,#checkPath do local v = checkPath[i]
-    if v.Name == 'Circuit' and v.Name == 'BigCircuit' then 
+    if v.Name == 'Circuit' then
 for _,v in pairs(game:GetService("Workspace").Circuit:GetDescendants()) do
 if v:IsA("TouchTransmitter") then
 firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 0)
+local getpath = game.Workspace:GetDescendants()
+
+for i = 1,#getpath do local v = getpath[i]
+    if v.Name == 'BigCircuit' then
 for _,v in pairs(game:GetService("Workspace").BigCircuit:GetDescendants()) do
 if v:IsA("TouchTransmitter") then
 firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 0)
@@ -34,32 +42,8 @@ firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent,
    end
 end
 end
-end)
-
--- Collect All Big Circuit if found
-
-local Key = "V"
-local Toggle = false
-
-game:GetService("UserInputService").InputBegan:Connect(function(keyobject, stuffhappening)
-    if keyobject.KeyCode == Enum.KeyCode[Key] and not stuffhappening then 
-        Toggle = not Toggle
-    end
-end)
-
-
-game:GetService('RunService').Stepped:connect(function()
-    if Toggle then
-local checkPath = game.Workspace:GetDescendants()
-
-for i = 1,#checkPath do local v = checkPath[i]
-    if v.Name == 'BigCircuit' then 
-for _,v in pairs(game:GetService("Workspace").BigCircuit:GetDescendants()) do
-if v:IsA("TouchTransmitter") then
-firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 0)
-        end 
-     end
-   end
+end
+end
 end
 end
 end)
