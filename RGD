@@ -19,10 +19,17 @@ end)
 
 game:GetService('RunService').Stepped:connect(function()
     if Toggle then
+local checkPath = game.Workspace:GetDescendants()
+
+for i = 1,#checkPath do local v = checkPath[i]
+    if v.Name == 'Circuit' then 
 for _,v in pairs(game:GetService("Workspace").Circuit:GetDescendants()) do
 if v:IsA("TouchTransmitter") then
 firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 0)
-    end
+        end 
+     end
+   end
+end
 end
 end
 end)
@@ -41,10 +48,17 @@ end)
 
 game:GetService('RunService').Stepped:connect(function()
     if Toggle then
+local checkPath = game.Workspace:GetDescendants()
+
+for i = 1,#checkPath do local v = checkPath[i]
+    if v.Name == 'BigCircuit' then 
 for _,v in pairs(game:GetService("Workspace").BigCircuit:GetDescendants()) do
 if v:IsA("TouchTransmitter") then
 firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 0)
-    end
+        end 
+     end
+   end
+end
 end
 end
 end)
