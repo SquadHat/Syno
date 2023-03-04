@@ -19,6 +19,18 @@ end)
 
 game:GetService('RunService').Stepped:connect(function()
     if Toggle then
+local Key = "B"
+local Toggle = false
+
+game:GetService("UserInputService").InputBegan:Connect(function(keyobject, stuffhappening)
+    if keyobject.KeyCode == Enum.KeyCode[Key] and not stuffhappening then 
+        Toggle = not Toggle
+    end
+end)
+
+
+game:GetService('RunService').Stepped:connect(function()
+    if Toggle then
 local checkPath = game.Workspace:GetDescendants()
 
 for i = 1,#checkPath do local v = checkPath[i]
@@ -31,12 +43,23 @@ firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent,
    end
 end
 end
-end
 end)
 
 -- Collect All Big Circuit if found
 
 local Key = "V"
+local Toggle = false
+
+game:GetService("UserInputService").InputBegan:Connect(function(keyobject, stuffhappening)
+    if keyobject.KeyCode == Enum.KeyCode[Key] and not stuffhappening then 
+        Toggle = not Toggle
+    end
+end)
+
+
+game:GetService('RunService').Stepped:connect(function()
+    if Toggle then
+local Key = "B"
 local Toggle = false
 
 game:GetService("UserInputService").InputBegan:Connect(function(keyobject, stuffhappening)
@@ -58,7 +81,6 @@ firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent,
         end 
      end
    end
-end
 end
 end
 end)
