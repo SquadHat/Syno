@@ -1,12 +1,8 @@
 game.StarterGui:SetCore("SendNotification", {
     Title = 'LOADED!';
-    Text = "R - Kill Hostile Droids
-            T - Kill All Droids
-            G - Kill Aura
-            C - Collect All Circuit
-            /e ws [Number] Walkspeed";
+    Text = "R - Kill Hostile Droids. T - Kill All Droids. G - Kill Aura. C - Collect All Circuit. /e ws [Number] Walkspeed";
     Icon = "rbxassetid://2541869220";
-    Duration = 8;
+    Duration = 10;
 })
 
 -- Collect All Circuits
