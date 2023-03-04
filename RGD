@@ -19,23 +19,14 @@ end)
 
 game:GetService('RunService').Stepped:connect(function()
     if Toggle then
-local Key = "B"
-local Toggle = false
-
-game:GetService("UserInputService").InputBegan:Connect(function(keyobject, stuffhappening)
-    if keyobject.KeyCode == Enum.KeyCode[Key] and not stuffhappening then 
-        Toggle = not Toggle
-    end
-end)
-
-
-game:GetService('RunService').Stepped:connect(function()
-    if Toggle then
 local checkPath = game.Workspace:GetDescendants()
 
 for i = 1,#checkPath do local v = checkPath[i]
-    if v.Name == 'Circuit' then 
+    if v.Name == 'Circuit' and v.Name == 'BigCircuit' then 
 for _,v in pairs(game:GetService("Workspace").Circuit:GetDescendants()) do
+if v:IsA("TouchTransmitter") then
+firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 0)
+for _,v in pairs(game:GetService("Workspace").BigCircuit:GetDescendants()) do
 if v:IsA("TouchTransmitter") then
 firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 0)
         end 
@@ -48,18 +39,6 @@ end)
 -- Collect All Big Circuit if found
 
 local Key = "V"
-local Toggle = false
-
-game:GetService("UserInputService").InputBegan:Connect(function(keyobject, stuffhappening)
-    if keyobject.KeyCode == Enum.KeyCode[Key] and not stuffhappening then 
-        Toggle = not Toggle
-    end
-end)
-
-
-game:GetService('RunService').Stepped:connect(function()
-    if Toggle then
-local Key = "B"
 local Toggle = false
 
 game:GetService("UserInputService").InputBegan:Connect(function(keyobject, stuffhappening)
