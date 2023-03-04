@@ -1,9 +1,22 @@
 game.StarterGui:SetCore("SendNotification", {
     Title = 'LOADED!';
-    Text = "R - Kill Hostile Droids. T - Kill All Droids. G - Kill Aura. C - Collect All Circuit. /e ws [Number] Walkspeed";
+    Text = "Open Console For Instruction.";
     Icon = "rbxassetid://2541869220";
     Duration = 10;
 })
+
+print([[
+
+
+---== INSTRUCTION ==---
+R - Kill Hostile Droids
+T - Kill All Droids
+G - Kill Aura
+C - Collect All Circuit
+Walkspeed CMD
+/e ws 30 (Type In Chat)
+- change 30 to any numbers at your liking
+]])
 
 -- Collect All Circuits
 
@@ -96,7 +109,6 @@ LocalPlayer.SimulationRadiusChanged:Connect(function(radius)
    radius = 9e9
    return radius
 end)
-print(gethiddenproperty(game.Players.LocalPlayer, "SimulationRadius"))
 
 -- Kill Aura (Exclude FriendlyDroid)
 
