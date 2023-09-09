@@ -16,7 +16,7 @@ C - Collect All Circuit
 F - Press All Button
 Walkspeed CMD
 /e ws 30 (Type In Chat)
-- change 30 to any numbers at your liking
+- change 30 to any number at your liking
 ]])
 
 -- Collect All Circuits
@@ -76,7 +76,7 @@ end
 end
 end)
 
--- Kill All Droids (Exclude Friendly Droid And Anti Droid)
+-- Kill All Droids (Include Friendly Droid and Anti Droid)
 
 plr = game.Players.LocalPlayer
 mouse = plr:GetMouse()
