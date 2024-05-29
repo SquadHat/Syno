@@ -1,0 +1,24 @@
+if game.PlaceId ~= 13042495892 then
+    return
+end
+ 
+repeat
+    wait()
+until game:GetService("Players").LocalPlayer.PlayerGui.Main
+ 
+repeat
+    UI = game:GetService("Players").LocalPlayer.PlayerGui.Main
+    Solo = UI.SoloUI.SoloPlay
+    UIOV = UI.SoloUI.SoloPlay.UIOV
+until Solo and UIOV
+ 
+function onButtonClicked()
+    UI.SoloUI.Visible = false
+    game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("EngineControl"):FireServer("StartSingleplayer", false)
+end
+ 
+Solo.MouseButton1Click:Connect(onButtonClicked)
+ 
+while wait() do
+    UIOV.Visible = false
+end
