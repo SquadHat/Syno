@@ -1,24 +1,30 @@
 if game.PlaceId ~= 13042495892 then
     return
 end
- 
-repeat
-    wait()
-until game:GetService("Players").LocalPlayer.PlayerGui.Main
- 
-repeat
-    UI = game:GetService("Players").LocalPlayer.PlayerGui.Main
-    Solo = UI.SoloUI.SoloPlay
-    UIOV = UI.SoloUI.SoloPlay.UIOV
-until Solo and UIOV
- 
-function onButtonClicked()
-    UI.SoloUI.Visible = false
-    game:GetService("ReplicatedStorage"):WaitForChild("Events"):WaitForChild("EngineControl"):FireServer("StartSingleplayer", false)
+
+-- This does absolutely nothing.
+if not game:IsLoaded() then
+    game.Loaded:Wait()
 end
- 
-Solo.MouseButton1Click:Connect(onButtonClicked)
- 
-while wait() do
-    UIOV.Visible = false
+
+local Main = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("Main")
+local UI = Main:WaitForChild("SoloUI")
+local Solo = UI:WaitForChild("SoloPlay")
+local SoloL = UI:WaitForChild("SoloLabel")
+local MultiLabel = UI:WaitForChild("MultiLabel")
+local Label = SoloL:WaitForChild("Label")
+local Overlay = Solo:WaitForChild("Overlay")
+
+local function SSP()
+    UI.Visible = false
+    game:GetService("ReplicatedStorage").Events.EngineControl:FireServer("StartSingleplayer", false)
 end
+
+Solo.MouseButton1Click:Connect(SSP)
+
+game:GetService("RunService").RenderStepped:Connect(function()
+    Label.Text = "Have fun! ^w^"
+    MultiLabel.Visible = false
+    Overlay.Visible = false
+    Solo.Visible = true
+end)
