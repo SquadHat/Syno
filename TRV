@@ -54,7 +54,6 @@ local function HLOPPS()
             local HL = Instance.new("Highlight")
             HL.Name = "OPPHL"
             HL.Adornee = Enemy
-            HL.FillColor = Color3.new(1, 0, 0)
             HL.FillTransparency = 1
             HL.OutlineColor = Color3.new(1, 0, 0)
             HL.Parent = Enemy
