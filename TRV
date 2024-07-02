@@ -1,0 +1,255 @@
+--// Keybinds \\--
+
+Takedown = "K"
+Stamina = "J"
+GodMode = "Y"
+ESP = "V"
+
+--// God Mode \\--
+
+local GME = false
+Notification = true
+
+local function Creative()
+    game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvent"):FireServer({{[1] = "\13", [2] = "True"}})
+end
+
+local function GMT()
+    if GME then
+        if GMConnection then 
+            GMConnection:Disconnect()
+            GMConnection = nil
+        end
+        game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvent"):FireServer({{[1] = "\13", [2] = "False"}})
+        if Notification then
+            game:GetService("StarterGui"):SetCore("SendNotification", {
+                Title = "God Mode",
+                Text = "DISABLED",
+                Icon = "rbxassetid://11454949687",
+                Duration = 0.4
+            })
+        end
+    else
+        GMConnection = game:GetService("RunService").RenderStepped:Connect(Creative)
+        if Notification then
+            game:GetService("StarterGui"):SetCore("SendNotification", {
+                Title = "God Mode",
+                Text = "ENABLED",
+                Icon = "rbxassetid://11454949692",
+                Duration = 0.4
+            })
+        end
+    end
+    GME = not GME
+end
+
+game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessedEvent)
+    if not gameProcessedEvent and input.KeyCode.Name == GodMode then
+        GMT()
+    end
+end)
+
+--// ESP \\--
+
+local HLT = false
+local HLConnection
+
+local function HLOPPS()
+    local Enemies = game.workspace:WaitForChild("Enemies")
+    for _, Enemy in ipairs(Enemies:GetChildren()) do
+        if Enemy:IsA("Model") and Enemy.Name == "Enemy" and not Enemy:FindFirstChild("OPPHL") then
+            local HL = Instance.new("Highlight")
+            HL.Name = "OPPHL"
+            HL.Adornee = Enemy
+            HL.FillColor = Color3.new(1, 0, 0)
+            HL.FillTransparency = 1
+            HL.OutlineColor = Color3.new(1, 0, 0)
+            HL.Parent = Enemy
+        end
+    end
+    local Corpses = game.workspace:WaitForChild("Corpses")
+    for _, Enemy in ipairs(Corpses:GetChildren()) do
+        if Enemy:IsA("Model") and Enemy.Name == "Enemy" then
+            local opps = Enemy:FindFirstChild("OPPHL")
+            if opps then
+                opps:Destroy()
+            end
+        end
+    end
+end
+
+local function ROPPS()
+    local Enemies = game.workspace:WaitForChild("Enemies")
+    for _, Enemy in ipairs(Enemies:GetChildren()) do
+        if Enemy:IsA("Model") and Enemy.Name == "Enemy" then
+            local opps = Enemy:FindFirstChild("OPPHL")
+            if opps then
+                opps:Destroy()
+            end
+        end
+    end
+    local Corpses = game.workspace:WaitForChild("Corpses")
+    for _, Enemy in ipairs(Corpses:GetChildren()) do
+        if Enemy:IsA("Model") and Enemy.Name == "Enemy" then
+            local opps = Enemy:FindFirstChild("OPPHL")
+            if opps then
+                opps:Destroy()
+            end
+        end
+    end
+end
+
+local function THL()
+    if HLT then
+        if HLConnection then
+            HLConnection:Disconnect()
+            HLConnection = nil
+        end
+        ROPPS()
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "ESP",
+            Text = "DISABLED",
+            Icon = "rbxassetid://12856769244",
+            Duration = 0.4
+        })
+    else
+        HLConnection = game:GetService("RunService").RenderStepped:Connect(HLOPPS)
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "ESP",
+            Text = "ENABLED",
+            Icon = "rbxassetid://18301999277",
+            Duration = 0.4
+        })
+    end
+    HLT = not HLT
+end
+
+game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessedEvent)
+    if not gameProcessedEvent and input.KeyCode.Name == ESP then
+        THL()
+    end
+end)
+
+--// Takedowns \\--
+
+Takedown = "K"
+
+local Takedowns = false
+local DMGVV = {}
+
+local function DMGX()
+    local Character = game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name)
+
+    if Character then
+        for _, item in ipairs(Character:GetChildren()) do
+            if item:IsA("Model") and item:GetAttribute("Damage") then
+                local DMGV = item:GetAttribute("Damage")
+                if DMGV and DMGV < 10000 then
+                    DMGVV[item] = DMGV
+                end
+                item:SetAttribute("Damage", math.huge)
+            end
+        end
+    end
+end
+
+local function DMGR()
+    for Item, DMGV in pairs(DMGVV) do
+        if Item:GetAttribute("Damage") == math.huge then
+            Item:SetAttribute("Damage", DMGV)
+        end
+    end
+end
+
+local function TK()
+    if Takedowns then
+        if TKConnection then 
+            TKConnection:Disconnect()
+            TKConnection = nil
+        end
+        DMGR()
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Always Takedowns",
+            Text = "DISABLED",
+            Icon = "rbxassetid://18303559914",
+            Duration = 0.4
+        })
+    else
+        TKConnection = game:GetService("RunService").RenderStepped:Connect(DMGX)
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Always Takedowns",
+            Text = "ENABLED",
+            Icon = "rbxassetid://18303557940",
+            Duration = 0.4
+        })
+    end
+    Takedowns = not Takedowns
+end
+
+game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessedEvent)
+    if not gameProcessedEvent and input.KeyCode.Name == Takedown then
+        TK()
+    end
+end)
+
+--// Stamina \\--
+
+Stamina = "J"
+
+local ST = false
+local STV = {}
+
+local function STA()
+    local Character = game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name)
+
+    if Character then
+        for _, item in ipairs(Character:GetChildren()) do
+            if item:IsA("Model") and item:GetAttribute("StaminaCost") then
+                local STAV = item:GetAttribute("StaminaCost")
+                if STAV and STAV ~= 0 then
+                    STV[item] = STAV
+                end
+                item:SetAttribute("StaminaCost", 0)
+            end
+        end
+    end
+end
+
+local function STAR()
+    for Item, STAV in pairs(STV) do
+        if Item:GetAttribute("StaminaCost") == 0 then
+            Item:SetAttribute("StaminaCost", STAV)
+        end
+    end
+end
+
+local function S()
+    if ST then
+        if STConnection then 
+            STConnection:Disconnect()
+            STConnection = nil
+        end
+        STAR()
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "No Stamina Usage",
+            Text = "DISABLED",
+            Icon = "rbxassetid://13492313545",
+            Duration = 0.4
+        })
+    else
+        STConnection = game:GetService("RunService").RenderStepped:Connect(STA)
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "No Stamina Usage",
+            Text = "ENABLED",
+            Icon = "rbxassetid://14549056586",
+            Duration = 0.4
+        })
+    end
+    ST = not ST
+end
+
+game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessedEvent)
+    if not gameProcessedEvent and input.KeyCode.Name == Stamina then
+        S()
+    end
+end)
