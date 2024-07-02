@@ -1,10 +1,3 @@
---// Keybinds \\--
-
-Takedown = "K"
-Stamina = "J"
-GodMode = "Y"
-ESP = "V"
-
 --// God Mode \\--
 
 local GME = false
