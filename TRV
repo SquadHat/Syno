@@ -245,3 +245,49 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, gameProce
         S()
     end
 end)
+
+--// Free Gamepass \\--
+
+local VConnection = {}
+local FGP = false
+
+local function TGP()
+    local Player = game:GetService("Players").LocalPlayer
+    local VUserID = Player.UserId
+    FGP = not FGP
+    if FGP then
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Free Gamepasses",
+            Text = "ENABLED",
+            Icon = "rbxassetid://17686538750",
+            Duration = 0.4
+        })
+        for _, Button in pairs(Player.PlayerGui.GamepassMenu.Frame:GetDescendants()) do
+            if Button:IsA("ImageButton") then
+                VConnection[Button] = Button.MouseButton1Click:Connect(function()
+                    Player.UserId = 22643289
+                    wait(0.01)
+                    Player.UserId = VUserID
+                end)
+            end
+        end
+    else
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Free Gamepasses",
+            Text = "DISABLED",
+            Icon = "rbxassetid://299432393",
+            Duration = 0.4
+        })
+        for Button, V in pairs(VConnection) do
+            V:Disconnect()
+        end
+        VConnection = {}
+        Player.UserId = VUserID
+    end
+end
+
+game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessedEvent)
+    if not gameProcessedEvent and input.KeyCode.Name == FreeGamepass then
+        TGP()
+    end
+end)
