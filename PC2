@@ -1,0 +1,629 @@
+--// Monster ESP \\--
+
+local Monsters = {
+    ["Vapor"] = {id = "16930100832", color = Color3.fromRGB(139, 0, 0)},
+    ["Rosemary"] = {id = "17046196445", color = Color3.fromRGB(205, 127, 50)},
+    ["The Fogborn"] = {id = "16944338654", color = Color3.fromRGB(128, 128, 128)},
+    ["EXE"] = {id = "16991056715", color = Color3.fromRGB(0, 0, 139)},
+    ["Ao Oni"] = {id = "16774703565", color = Color3.fromRGB(75, 0, 130)},
+    ["Baldi"] = {id = "17339637988", color = Color3.fromRGB(0, 255, 0)},
+    ["Uncle Samsonite"] = {id = "17498129165", color = Color3.fromRGB(245, 222, 179)},
+    ["Springtrap"] = {id = "17582631852", color = Color3.fromRGB(0, 100, 0)},
+    ["MX"] = {id = "17581430691", color = Color3.fromRGB(255, 0, 0)},
+    ["The Forest King"] = {id = "17891230783", color = Color3.fromRGB(255, 245, 115)}
+}
+
+local Modes = {"Auto", "Both"}
+local ModeX = 1
+
+local function VCPlayer(player)
+    if player:FindFirstChild("Aspects") and not player:FindFirstChild("MonsterNameValue") then
+        return true
+    end
+    return false
+end
+
+local function CAHL(model)
+    local HL = Instance.new("Highlight")
+    HL.OutlineColor = Color3.fromRGB(0, 255, 0)
+    HL.FillTransparency = 1
+    HL.OutlineTransparency = 0
+    HL.Adornee = model
+    HL.Parent = model
+end
+
+local function CSHL(model)
+    local HL = Instance.new("Highlight")
+    HL.OutlineColor = Color3.fromRGB(150, 205, 255)
+    HL.FillTransparency = 1
+    HL.OutlineTransparency = 0
+    HL.Adornee = model
+    HL.Parent = model
+end
+
+local function CMHL(model)
+    local HL = Instance.new("Highlight")
+    HL.OutlineColor = Color3.fromRGB(255, 0, 0)
+    HL.FillTransparency = 1
+    HL.OutlineTransparency = 0
+    HL.Adornee = model
+    HL.Parent = model
+end
+
+local function CSSHL(model)
+    local Highlight = model:FindFirstChild("Highlight")
+    if Highlight then
+        Highlight:Destroy()
+    end
+    local SHighlight = Instance.new("Highlight")
+    SHighlight.Name = "SHighlight"
+    SHighlight.OutlineColor = Color3.fromRGB(255, 0, 0)
+    SHighlight.FillTransparency = 1
+    SHighlight.OutlineTransparency = 0
+    SHighlight.Adornee = model
+    SHighlight.Parent = model
+end
+
+local function VGUI()
+    if Workspace.Server.RoundHandler.Mode.Value ~= "Survive" then
+        return
+    end
+
+    for _, player in ipairs(game.Workspace:GetChildren()) do
+        local FindMonsterName = player:FindFirstChild("MonsterNameValue")
+        local FindLocal = game.workspace[game.Players.LocalPlayer.Name]
+        local LocalMonster = FindLocal:FindFirstChild("MonsterNameValue")
+        if FindMonsterName then
+            if not LocalMonster and player.Name ~= "Player" then
+                local Monster = Monsters[FindMonsterName.Value]
+                if Monster and not player.Head:FindFirstChild("BillboardGui") and not player:FindFirstChild("Highlight") then
+                    local VXGui = Instance.new("BillboardGui")
+                    local IMGL = Instance.new("ImageLabel")
+                    local TL = Instance.new("TextLabel")
+
+                    VXGui.Adornee = player.Head
+                    VXGui.Size = UDim2.new(0, 30, 0, 30)
+                    VXGui.StudsOffset = Vector3.new(0, 4.7, 0)
+                    VXGui.AlwaysOnTop = true
+
+                    IMGL.Image = "rbxassetid://" .. Monster.id
+                    IMGL.Size = UDim2.new(1, 0, 0.5, 0)
+                    IMGL.Position = UDim2.new(0, 0, 0.5, 0)
+                    IMGL.BackgroundTransparency = 1
+
+                    TL.Text = FindMonsterName.Value
+                    TL.BackgroundTransparency = 1
+                    TL.Size = UDim2.new(1, 0, 0.5, 0)
+                    TL.Font = 'Arcade'
+                    TL.FontSize = 5.5
+                    TL.TextColor3 = Monster.color
+                    TL.TextStrokeTransparency = 0.9
+                    TL.TextStrokeColor3 = Color3.new(1, 1, 1)
+
+                    IMGL.Parent = VXGui
+                    TL.Parent = VXGui
+
+                    VXGui.Parent = player.Head
+
+                    CMHL(player)
+                end
+            elseif LocalMonster then
+                for _, player in ipairs(game.Workspace:GetChildren()) do
+                    if player.Name ~= game.Players.LocalPlayer.Name and player.Name ~= "Player" then
+                        if player:FindFirstChild("Aspects") and not player:FindFirstChild("MonsterNameValue") and not player:FindFirstChild("Highlight") then
+                            CSHL(player)
+                        end
+                    end
+                end
+            end
+        end
+        if player.Name == "SpiderSkull" and not player:FindFirstChild("SHighlight") then
+            CSSHL(player)
+        end
+    end
+end
+
+local MESP = false
+local MConnection
+
+local function VRGui()
+    for _, player in ipairs(game.Workspace:GetChildren()) do
+        if player:FindFirstChild("Head") then
+            for _, child in ipairs(player.Head:GetChildren()) do
+                if child:IsA("BillboardGui") then
+                    child:Destroy()
+                end
+            end
+        end
+    end
+end
+
+local function RMHL()
+    for _, child in ipairs(game.Workspace:GetChildren()) do
+        local aspectsFolder = child:FindFirstChild("Aspects")
+        local highlight = child:FindFirstChild("Highlight")
+        if aspectsFolder and highlight then
+            highlight:Destroy()
+        end
+        if child.Name == "SpiderSkull" and highlight then
+            highlight:Destroy()
+        end
+    end
+end
+
+local function HLA()
+    if Workspace.Server.RoundHandler.Mode.Value ~= "Survive" then
+        return
+    end
+    for _, player in ipairs(game.Workspace:GetChildren()) do
+        local FindMonsterName = player:FindFirstChild("MonsterNameValue")
+        local FindLocal = game.workspace[game.Players.LocalPlayer.Name]
+        local LocalMonster = FindLocal:FindFirstChild("MonsterNameValue")
+        if FindMonsterName then
+            if player.Name ~= game.Players.LocalPlayer.Name and player.Name ~= "Player" then
+                local Monster = Monsters[FindMonsterName.Value]
+                if Monster and not player.Head:FindFirstChild("BillboardGui") and not player:FindFirstChild("Highlight") then
+                    local VVGui = Instance.new("BillboardGui")
+                    local IMGV = Instance.new("ImageLabel")
+                    local TXL = Instance.new("TextLabel")
+
+                    VVGui.Adornee = player.Head
+                    VVGui.Size = UDim2.new(0, 30, 0, 30)
+                    VVGui.StudsOffset = Vector3.new(0, 4.7, 0)
+                    VVGui.AlwaysOnTop = true
+
+                    IMGV.Image = "rbxassetid://" .. Monster.id
+                    IMGV.Size = UDim2.new(1, 0, 0.5, 0)
+                    IMGV.Position = UDim2.new(0, 0, 0.5, 0)
+                    IMGV.BackgroundTransparency = 1
+
+                    TXL.Text = FindMonsterName.Value
+                    TXL.BackgroundTransparency = 1
+                    TXL.Size = UDim2.new(1, 0, 0.5, 0)
+                    TXL.Font = 'Arcade'
+                    TXL.FontSize = 5.5
+                    TXL.TextColor3 = Monster.color
+                    TXL.TextStrokeTransparency = 0.9
+                    TXL.TextStrokeColor3 = Color3.new(1, 1, 1)
+
+                    IMGV.Parent = VVGui
+                    TXL.Parent = VVGui
+
+                    VVGui.Parent = player.Head
+
+                    CMHL(player)
+                end
+            end
+        end
+        if player.Name ~= game.Players.LocalPlayer.Name and player.Name ~= "Player" then
+            if VCPlayer(player) and not player:FindFirstChild("Highlight") then
+                CAHL(player)
+            end
+        end
+        if player.Name == "SpiderSkull" and not player:FindFirstChild("SHighlight") then
+            CSSHL(player)
+        end
+    end
+end
+
+local function MLoop()
+    MESP = not MESP
+    if MESP then
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "ESP",
+            Text = "ENABLED",
+            Icon = "rbxassetid://16149075788",
+            Duration = 0.3
+        })
+        if Modes[ModeX] == "Auto" then
+            MConnection = game:GetService("RunService").RenderStepped:Connect(VGUI)
+        elseif Modes[ModeX] == "Both" then
+            MConnection = game:GetService("RunService").RenderStepped:Connect(HLA)
+        end
+    else
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "ESP",
+            Text = "DISABLED",
+            Icon = "rbxassetid://17708914336",
+            Duration = 0.3
+        })
+        if MConnection then
+            MConnection:Disconnect()
+            MConnection = nil
+        end
+        VRGui()
+        RMHL()
+    end
+end
+
+game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessedEvent)
+    if not gameProcessedEvent and input.KeyCode.Name == ESP then
+        MLoop()
+    elseif not gameProcessedEvent and input.KeyCode.Name == ESPSwitch then
+        if MConnection then
+            MConnection:Disconnect()
+            MConnection = false
+        end
+        VRGui()
+        RMHL()
+
+        ModeX = ModeX % #Modes + 1
+        if Modes[ModeX] == "Auto" then
+            game:GetService("StarterGui"):SetCore("SendNotification", {
+                Title = "Auto",
+                Text = "Switched to Auto",
+                Icon = "rbxassetid://13492314588",
+                Duration = 0.1
+            })
+        else
+            game:GetService("StarterGui"):SetCore("SendNotification", {
+                Title = "Both",
+                Text = "Switched to Both",
+                Icon = "rbxassetid://12445918040",
+                Duration = 0.1
+            })
+        end
+
+        if MESP then
+            if Modes[ModeX] == "Both" then
+                MConnection = game:GetService("RunService").RenderStepped:Connect(HLA)
+            elseif Modes[ModeX] == "Auto" then
+                MConnection = game:GetService("RunService").RenderStepped:Connect(VGUI)
+            end
+        end
+    end
+end)
+
+--// Remove Fog \\--
+
+local NoFog = false
+
+local function DensityT()
+    if NoFog then
+        game.Lighting.Atmosphere.Density = 0
+        game.Lighting.FogEnd = 100000
+    else
+        game.Lighting.Atmosphere.Density = OriginalDensity
+        if AConnection then
+            AConnection:Disconnect()
+            AConnection = nil
+        end
+    end
+end
+
+game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessedEvent)
+    if not gameProcessedEvent and input.KeyCode.Name == RemoveFog then
+        NoFog = not NoFog
+        if NoFog then
+            AConnection = game:GetService("RunService").RenderStepped:Connect(function()
+                local map = game.Workspace:FindFirstChild("Map")
+                if map and map:FindFirstChild("Density") and not OriginalDensity and game.Lighting.Atmosphere.Density ~= 0 then
+                    OriginalDensity = map.Density.Value
+                elseif not map and not OriginalDensity and game.Lighting.Atmosphere.Density ~= 0 then
+                    OriginalDensity = game.Lighting.Atmosphere.Density
+                end
+                DensityT()
+            end)
+            game:GetService("StarterGui"):SetCore("SendNotification", {
+                Title = "No Fog",
+                Text = "ENABLED",
+                Icon = "rbxassetid://13492317832",
+                Duration = 0.1
+            })
+        else
+            DensityT()
+            game:GetService("StarterGui"):SetCore("SendNotification", {
+                Title = "Fog",
+                Text = "DISABLED",
+                Icon = "rbxassetid://15606171585",
+                Duration = 0.1
+            })
+        end
+    end
+end)
+
+--// Fullbright \\--
+
+local OAT = false
+local OriginalOA
+local OAConnection
+
+local function TOA()
+    if OAT then
+        if OAConnection then
+            OAConnection:Disconnect()
+            OAConnection = nil
+        end
+        game:GetService("Lighting").OutdoorAmbient = OriginalOA
+        OAT = false
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Fullbright",
+            Text = "DISABLED",
+            Icon = "rbxassetid://15463119245",
+            Duration = 0.1
+        })
+    else
+        OAConnection = game:GetService("RunService").RenderStepped:Connect(function()
+            if game:GetService("Lighting").OutdoorAmbient ~= Color3.fromRGB(150, 150, 150) then
+                OriginalOA = game:GetService("Lighting").OutdoorAmbient
+            end
+            game:GetService("Lighting").OutdoorAmbient = Color3.fromRGB(150, 150, 150)
+        end)
+        OAT = true
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Fullbright",
+            Text = "ENABLED",
+            Icon = "rbxassetid://13362078225",
+            Duration = 0.1
+        })
+    end
+end
+
+game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessedEvent)
+    if not gameProcessedEvent and input.KeyCode.Name == Fullbright then
+        TOA()
+    end
+end)
+
+--// Objective ESP \\--
+
+local QT = false
+
+local Objectives = {
+    ["Axe"] = 8772286873,
+    ["Donut"] = 12095545176,
+    ["Mug"] = 12285249930,
+    ["Poster"] = 12955207194,
+    ["Ring"] = 16717162450,
+    ["Shotgun"] = 2992766943,
+    ["Hat"] = 14843436332,
+    ["Page"] = 592082658,
+    ["StandingTorch"] = 15654574813,
+    ["PhantomCupcake"] = 16114846365,
+    ["Paper on Floor"] = 5187104564,
+    ["Trash Block"] = 14002617467,
+    ["Baldloon"] = 15896011018,
+    ["Banana"] = 11530952592,
+    ["Button"] = 199820279,
+    ["Valve"] = 11644485082,
+    ["Vent"] = 6305192396,
+    ["Keypad"] = 16149179345,
+    ["Chest"] = 16048211715,
+    ["Note"] = 7276823330,
+    ["Key"] = 129697930
+}
+
+local function COBJGUI(item, imageId)
+    if not item:FindFirstChild("BillboardGui") then
+        local GUI = Instance.new("BillboardGui")
+        GUI.Name = "BillboardGui"
+        GUI.Adornee = item
+        if item.Name == "Baldloon" then
+            GUI.Size = UDim2.new(0, 40, 0, 40)
+            GUI.StudsOffset = Vector3.new(0, 3, 0)
+        else
+            GUI.Size = UDim2.new(0, 20, 0, 20)
+            GUI.StudsOffset = Vector3.new(0, 3, 0)
+        end
+        GUI.AlwaysOnTop = true
+
+        local IMG = Instance.new("ImageLabel")
+        IMG.Size = UDim2.new(1, 0, 1, 0)
+        IMG.Image = "rbxassetid://" .. imageId
+        IMG.BackgroundTransparency = 1
+        IMG.Parent = GUI
+
+        GUI.Parent = item
+    end
+end
+
+local function ROBJGUI()
+    local function RF(parent)
+        for _, item in pairs(parent:GetChildren()) do
+            if item:FindFirstChild("BillboardGui") then
+                item.BillboardGui:Destroy()
+            end
+        end
+    end
+
+    if game.workspace:FindFirstChild("Map") then
+        local ObjectiveInteract = game.workspace.Map:FindFirstChild("ObjectiveInteract")
+        local ObjectiveInteract2 = game.workspace.Map:FindFirstChild("ObjectiveInteract2")
+        if ObjectiveInteract then RF(ObjectiveInteract) end
+        if ObjectiveInteract2 then RF(ObjectiveInteract2) end
+    end
+end
+
+local function OBJGUI()
+    if not game.workspace:FindFirstChild("Map") then 
+        return 
+    end
+
+    local ObjectiveInteract = game.workspace.Map:FindFirstChild("ObjectiveInteract")
+    local ObjectiveInteract2 = game.workspace.Map:FindFirstChild("ObjectiveInteract2")
+
+    if ObjectiveInteract then
+        for ItemV, imageId in pairs(Objectives) do
+            for _, Item in pairs(ObjectiveInteract:GetChildren()) do
+                if Item.Name == ItemV or Item:FindFirstChild(ItemV) then
+                    local ObjectivePrompt = Item:FindFirstChild("ObjectivePrompt", true)
+                    local ProximityPrompt = Item:FindFirstChild("ProximityPrompt", true)
+                    if ObjectivePrompt or (ProximityPrompt and ProximityPrompt.Enabled) then
+                        COBJGUI(Item, imageId)
+                    else
+                        if Item:FindFirstChild("BillboardGui") then
+                            Item.BillboardGui:Destroy()
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    if ObjectiveInteract2 then
+        for ItemV, imageId in pairs(Objectives) do
+            for _, Item in pairs(ObjectiveInteract2:GetChildren()) do
+                if Item.Name == ItemV or Item:FindFirstChild(ItemV) then
+                    local Prompt = Item:FindFirstChild("ObjectivePrompt", true)
+                    local ProximityPrompt = Item:FindFirstChild("ProximityPrompt", true)
+                    if Prompt or (ProximityPrompt and ProximityPrompt.Enabled) then
+                        COBJGUI(Item, imageId)
+                    else
+                        if Item:FindFirstChild("BillboardGui") then
+                            Item.BillboardGui:Destroy()
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+local function ObjectiveT()
+    QT = not QT
+    if QT then
+        OConnection = game:GetService("RunService").RenderStepped:Connect(function()
+            if game.workspace:FindFirstChild("Map") then
+                OBJGUI()
+            end
+        end)
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Objective",
+            Text = "ENABLED",
+            Icon = "rbxassetid://15000498894",
+            Duration = 0.4
+        })
+    else
+        if OConnection then
+            OConnection:Disconnect()
+            OConnection = nil
+        end
+        ROBJGUI()
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Objective",
+            Text = "DISABLED",
+            Icon = "rbxassetid://13338543346",
+            Duration = 0.4
+        })
+    end
+end
+
+game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessedEvent)
+    if not gameProcessedEvent and input.KeyCode.Name == ObjectiveESP then
+        ObjectiveT()
+    end
+end)
+
+--// Item ESP \\--
+
+local Items = {
+    ["Ultra Flashlight"] = 11816735673,
+    ["Doom's Gauntlet"] = 18272926107,
+    ["First Aid Kit"] = 10223771842,
+    ["Flashlight"] = 10734536497,
+    ["Weird Mask"] = 13492314984,
+    ["Stephano"] = 27173222
+}
+
+local PickUpsFolder = game.workspace.Server.PickUps
+local ITConnection = false
+
+local function PromptX(item)
+    local PickUp = item:FindFirstChild("PickUp")
+    if PickUp then
+        local ProximityPrompt = PickUp:FindFirstChild("ProximityPrompt")
+        if ProximityPrompt and ProximityPrompt.Enabled then
+            return true
+        end
+    end
+    return false
+end
+
+local function CITGUI(item, imageId)
+    if not item:FindFirstChild("BillboardGui") and PromptX(item) then
+        local ITGUI = Instance.new("BillboardGui")
+        ITGUI.Name = "BillboardGui"
+        ITGUI.Adornee = item
+        ITGUI.Size = item.Name == "First Aid Kit" and UDim2.new(0, 20, 0, 20) or UDim2.new(0, 15, 0, 15)
+        ITGUI.AlwaysOnTop = true
+        ITGUI.StudsOffset = Vector3.new(0, 1, 0)
+
+        local IMGX = Instance.new("ImageLabel")
+        IMGX.Size = UDim2.new(1, 0, 1, 0)
+        IMGX.Image = "rbxassetid://" .. imageId
+        IMGX.BackgroundTransparency = 1
+        IMGX.Parent = ITGUI
+
+        ITGUI.Parent = item
+    end
+end
+
+local function RITGUI()
+    for _, item in pairs(PickUpsFolder:GetChildren()) do
+        if item:FindFirstChild("BillboardGui") then
+            item.BillboardGui:Destroy()
+        end
+    end
+    for _, player in pairs(game.workspace:GetChildren()) do
+        if player:IsA("Model") and player:FindFirstChild("Humanoid") then
+            for ItemV, _ in pairs(Items) do
+                local VItem = player:FindFirstChild(ItemV)
+                if VItem and VItem:FindFirstChild("BillboardGui") then
+                    VItem.BillboardGui:Destroy()
+                end
+            end
+        end
+    end
+end
+
+local function VITGUI()
+    for ItemV, imageId in pairs(Items) do
+        for _, item in pairs(PickUpsFolder:GetChildren()) do
+            if item.Name == ItemV then
+                if PromptX(item) then
+                    CITGUI(item, imageId)
+                else
+                    if item:FindFirstChild("BillboardGui") then
+                        item.BillboardGui:Destroy()
+                    end
+                end
+            end
+        end
+        for _, player in pairs(game.workspace:GetChildren()) do
+            if player:IsA("Model") and player:FindFirstChild("Humanoid") then
+                local VItem = player:FindFirstChild(ItemV)
+                if VItem and VItem:FindFirstChild("BillboardGui") then
+                    VItem.BillboardGui:Destroy()
+                end
+            end
+        end
+    end
+end
+
+local function ItemsESP()
+    if ITConnection then
+        ITConnection:Disconnect()
+        ITConnection = false
+        RITGUI()
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Items",
+            Text = "DISABLED",
+            Icon = "rbxassetid://17720940733",
+            Duration = 0.4
+        })
+    else
+        ITConnection = game:GetService("RunService").RenderStepped:Connect(VITGUI)
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+            Title = "Items",
+            Text = "ENABLED",
+            Icon = "rbxassetid://16000149927",
+            Duration = 0.4
+        })
+    end
+end
+
+game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessedEvent)
+    if not gameProcessedEvent and input.KeyCode.Name == ItemESP then
+        ItemsESP()
+    end
+end)
