@@ -10,7 +10,8 @@ local Monsters = {
     ["Uncle Samsonite"] = {id = "17498129165", color = Color3.fromRGB(245, 222, 179)},
     ["Springtrap"] = {id = "17582631852", color = Color3.fromRGB(0, 100, 0)},
     ["MX"] = {id = "17581430691", color = Color3.fromRGB(255, 0, 0)},
-    ["The Forest King"] = {id = "17891230783", color = Color3.fromRGB(255, 245, 115)}
+    ["The Forest King"] = {id = "17891230783", color = Color3.fromRGB(255, 245, 115)},
+    ["WYST"] = {id = "18364507193", color = Color3.fromRGB(230, 230, 0)}
 }
 
 local Modes = {"Auto", "Both"}
