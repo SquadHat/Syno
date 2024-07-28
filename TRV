@@ -124,8 +124,6 @@ end)
 
 --// Takedowns \\--
 
-Takedown = "K"
-
 local Takedowns = false
 local DMGVV = {}
 
@@ -185,8 +183,6 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, gameProce
 end)
 
 --// Stamina \\--
-
-Stamina = "J"
 
 local ST = false
 local STV = {}
