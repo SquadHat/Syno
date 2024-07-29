@@ -13,12 +13,15 @@ local Tabs = {
     ['UI Settings'] = Window:AddTab('UI Settings'),
 }
 
-local MainTab = Tabs.Main:AddLeftGroupbox('Main')
+local MainTab = Tabs.Main:AddLeftTabbox()
+local MainTabV = MainTab:AddTab('Avoid')
 local LocalPlayer = game.Players.LocalPlayer
 local Method = "Dodge"
+local DelayTween = 1
 local Delay = 0
 
 local function AutoQ()
+    local Multiplied = 0
     AutoConnection = game:GetService("RunService").Stepped:Connect(function()
         for _, v in ipairs(game.Workspace.InstancedGeometry.Hitboxes:GetChildren()) do
             if v:IsA("BasePart") then
@@ -34,10 +37,12 @@ local function AutoQ()
                                 local MainTarget = HumanoidAttributes:GetAttribute("MainTarget")
                                 local Multiple = false
                                 local AttackTime = 0
+                                
                                 if CHoldingModelState == "Attack" then
                                     AttackTime = tick()
                                     Multiple = true
                                 end
+                                
                                 if Multiple then
                                     if (tick() - AttackTime) > 0.5 then
                                         Multiple = false
@@ -45,13 +50,16 @@ local function AutoQ()
                                 end
                                 if (Multiple or MainTarget == LocalPlayerY) and CHoldingModelState == "Attack" then
                                     if (LocalPlayerX.Position - x.Position).Magnitude <= 100 then
-                                        wait(Delay)
-                                        if Method == "Dodge" then
-                                            game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Q, false, nil)
-                                            game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.Q, false, nil)
-                                        else
-                                            game:GetService("VirtualInputManager"):SendMouseButtonEvent(0, 0, 1, true, nil, 0)
-                                            game:GetService("VirtualInputManager"):SendMouseButtonEvent(0, 0, 1, false, nil, 0)
+                                        if (tick() - Multiplied) >= DelayTween then
+                                            wait(Delay)
+                                            Multiplied = tick()
+                                            if Method == "Dodge" then
+                                                game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.Q, false, nil)
+                                                game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode.Q, false, nil)
+                                            else
+                                                game:GetService("VirtualInputManager"):SendMouseButtonEvent(0, 0, 1, true, nil, 0)
+                                                game:GetService("VirtualInputManager"):SendMouseButtonEvent(0, 0, 1, false, nil, 0)
+                                            end
                                         end
                                     end
                                 end
@@ -64,7 +72,19 @@ local function AutoQ()
     end)
 end
 
-MainTab:AddToggle('Auto', {
+MainTabV:AddDropdown('Method', {
+    Values = { 'Dodge', 'Block' },
+    Default = 1,
+    Multi = false,
+    Text = 'Method',
+    Callback = function(Value)
+        Method = Value
+    end
+})
+
+MainTabV:AddLabel('')
+
+MainTabV:AddToggle('Auto', {
     Text = 'Auto',
     Default = false,
     Tooltip = 'Automatically dodge or block attacks.',
@@ -80,11 +100,11 @@ MainTab:AddToggle('Auto', {
     end
 })
 
-MainTab:AddLabel('')
+MainTabV:AddLabel('')
 
-MainTab:AddSlider('Delay', {
+MainTabV:AddSlider('Delay', {
     Text = 'Delay',
-    Default = 0,
+    Default = Delay,
     Min = 0,
     Max = 3,
     Rounding = 2,
@@ -93,15 +113,16 @@ MainTab:AddSlider('Delay', {
     end
 })
 
-MainTab:AddLabel('')
+MainTabV:AddLabel('')
 
-MainTab:AddDropdown('Method', {
-    Values = { 'Dodge', 'Block' },
-    Default = 1,
-    Multi = false,
-    Text = 'Method',
+MainTabV:AddSlider('DelayTween', {
+    Text = 'Delay Between Attacks',
+    Default = DelayTween,
+    Min = 0,
+    Max = 3,
+    Rounding = 1,
     Callback = function(Value)
-        Method = Value
+        DelayTween = Value
     end
 })
 
@@ -114,7 +135,8 @@ ThemeManager:SetLibrary(linoria)
 SaveManager:SetLibrary(linoria)
 SaveManager:IgnoreThemeSettings()
 SaveManager:SetIgnoreIndexes({ 'MenuKeybind' })
-SaveManager:SetFolder('Pressure/Pressured')
+ThemeManager:SetFolder('Linoria')
+SaveManager:SetFolder('Linoria/Derelict')
 ThemeManager:ApplyToTab(Tabs['UI Settings'])
 SaveManager:BuildConfigSection(Tabs['UI Settings'])
 SaveManager:LoadAutoloadConfig()
