@@ -1,0 +1,320 @@
+local repo = 'https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/'
+
+local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
+local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
+local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
+
+local Window = Library:CreateWindow({
+    Title = 'HELLMET',
+    Center = true,
+    AutoShow = true,
+    TabPadding = 8
+})
+
+local Tabs = {
+    Main = Window:AddTab('Main'),
+    ['UI Settings'] = Window:AddTab('UI Settings'),
+}
+
+local LeftTabBox = Tabs.Main:AddLeftTabbox()
+local RightTabBox = Tabs.Main:AddRightTabbox()
+local FunctionsTab = LeftTabBox:AddTab('Functions')
+local VisualsTab = RightTabBox:AddTab('Visuals')
+
+--// Functions \\--
+
+local AmmoV = {}
+local LocalPlayer = game:GetService('Players').LocalPlayer
+
+FunctionsTab:AddToggle('InfAmmo', {
+    Text = 'Inf Ammo',
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            INFConnection = game:GetService('RunService').Stepped:Connect(function()
+                local Char = LocalPlayer.Character
+                local Backpack = LocalPlayer.Backpack
+                if Char then
+                    for _, Tool in pairs(Char:GetChildren()) do
+                        if Tool:IsA('Tool') and Tool:GetAttribute('Ammo') then
+                            if not AmmoV[Tool] then
+                                AmmoV[Tool] = Tool:GetAttribute('Ammo')
+                            end
+                            Tool:SetAttribute('Ammo', math.huge)
+                        end
+                    end
+                end
+                if Backpack then
+                    for _, Tool in pairs(Backpack:GetChildren()) do
+                        if Tool:IsA('Tool') and Tool:GetAttribute('Ammo') then
+                            if not AmmoV[Tool] then
+                                AmmoV[Tool] = Tool:GetAttribute('Ammo')
+                            end
+                            Tool:SetAttribute('Ammo', math.huge)
+                        end
+                    end
+                end
+            end)
+        else
+            if INFConnection then
+                INFConnection:Disconnect()
+                INFConnection = nil
+            end
+            for Tool, originalAmmo in pairs(AmmoV) do
+                if Tool and (Tool.Parent == LocalPlayer.Character or Tool.Parent == LocalPlayer.Backpack) then
+                    Tool:SetAttribute('Ammo', originalAmmo)
+                end
+            end
+            AmmoV = {}
+        end
+    end
+})
+
+FunctionsTab:AddToggle('InstantInteract', {
+    Text = 'Instant Interact',
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            InstantPrompt = game:GetService('ProximityPromptService').PromptButtonHoldBegan:Connect(function(prompt)
+                fireproximityprompt(prompt)
+            end)
+        else
+            if InstantPrompt then
+                InstantPrompt:Disconnect()
+                InstantPrompt = nil
+            end
+        end
+    end
+})
+
+FunctionsTab:AddToggle('InstantLockPick', {
+    Text = 'Instant Lockpick',
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            InstantLockpick = game:GetService('RunService').Stepped:Connect(function()
+                local Char = LocalPlayer.Character
+                if Char then
+                    for _, Tool in pairs(Char:GetChildren()) do
+                        if Tool.Name == "Lockpick" and Tool:GetAttribute("BaseLockpickTime") then
+                            Tool:SetAttribute('BaseLockpickTime', 0.25)
+                        end
+                    end
+                end
+            end)
+        else
+            if InstantLockpick then
+                InstantLockpick:Disconnect()
+                InstantLockpick = nil
+            end
+            local Char = LocalPlayer.Character
+            if Char then
+                for _, Tool in pairs(Char:GetChildren()) do
+                    if Tool.Name == "Lockpick" and Tool:GetAttribute("BaseLockpickTime") then
+                        Tool:SetAttribute('BaseLockpickTime', 2.5)
+                    end
+                end
+            end
+        end
+    end
+})
+
+--// Visuals \\--
+
+VisualsTab:AddToggle('Objective', {
+    Text = 'Objective',
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            KConnection = game:GetService("RunService").Stepped:Connect(function()
+                for _, v in ipairs(game.workspace.Map.Geometry:GetChildren()) do
+                    if v:IsA("Model") then
+                        local KeycardSpawns = v:FindFirstChild("KeycardSpawns")
+                        if KeycardSpawns then
+                            for _, Keycard in ipairs(KeycardSpawns:GetChildren()) do
+                                if Keycard:IsA("Model") then
+                                    local HL = Keycard:FindFirstChild("KCard")
+                                    if not HL then
+                                        HL = Instance.new("Highlight")
+                                        HL.Name = "KCard"
+                                        HL.FillColor = Color3.new(1, 1, 1)
+                                        HL.OutlineColor = Color3.new(1, 1, 0)
+                                        HL.Adornee = Keycard
+                                        HL.Parent = Keycard
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end)
+        else
+            if KConnection then
+                KConnection:Disconnect()
+                KConnection = nil
+            end
+            for _, v in ipairs(game.workspace.Map.Geometry:GetChildren()) do
+                if v:IsA("Model") then
+                    local KeycardSpawns = v:FindFirstChild("KeycardSpawns")
+                    if KeycardSpawns then
+                        for _, Keycard in ipairs(KeycardSpawns:GetChildren()) do
+                            local HL = Keycard:FindFirstChild("KCard")
+                            if HL then
+                                HL:Destroy()
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+})
+
+local function HighlightX()
+    for _, v in pairs(game.Workspace:GetChildren()) do
+        if v:IsA("Model") and (v.Name == "Civilian" or v.Name == "Hostile") then
+            local Find = v:FindFirstChild("HumanoidRootPart")
+            local Hostile = v:GetAttribute("Hostile")
+            local Friendly = v:FindFirstChild("Friendly")
+            if Find then
+                if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Find.Position).Magnitude <= 50 then
+                    if not Friendly then
+                        Friendly = Instance.new("Highlight")
+                        Friendly.Name = "Friendly"
+                        Friendly.Adornee = v
+                        Friendly.Parent = v
+                    end
+                    Friendly.FillTransparency = 1
+                    Friendly.OutlineTransparency = 0
+                    if v.Name == "Civilian" and (Hostile == false or Hostile == nil) then
+                        Friendly.OutlineColor = Color3.new(0, 1, 0)
+                    elseif v.Name == "Hostile" and Hostile == true then
+                        Friendly.OutlineColor = Color3.new(1, 0, 0)
+                    elseif v.Name == "Hostile" and (Hostile == false or Hostile == nil) then
+                        Friendly.OutlineColor = Color3.new(1, 1, 0)
+                    elseif v.Name == "Civilian" and Hostile == true then
+                        Friendly.OutlineColor = Color3.new(1, 0, 0)
+                    end
+                else
+                    if Friendly then
+                        Friendly:Destroy()
+                    end
+                end
+            end
+        end
+    end
+    for _, Ragdoll in pairs(game.Workspace.Ragdolls:GetChildren()) do
+        if Ragdoll:IsA("Model") then
+            local Hesitation = Ragdoll:FindFirstChild("Friendly")
+            if Hesitation then
+                Hesitation:Destroy()
+            end
+        end
+    end
+end
+
+VisualsTab:AddToggle('ESP', {
+    Text = 'ESP',
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            HLConnection = game:GetService("RunService").Stepped:Connect(HighlightX)
+        else
+            if HLConnection then
+                HLConnection:Disconnect()
+                HLConnection = nil
+            end
+            for _, v in pairs(game.Workspace:GetChildren()) do
+                if v:IsA("Model") then
+                    local Hesitation = v:FindFirstChild("Friendly")
+                    if Hesitation then
+                        Hesitation:Destroy()
+                    end
+                end
+            end
+            for _, v in pairs(game.Workspace.Ragdolls:GetChildren()) do
+                if v:IsA("Model") then
+                    local Hesitation = v:FindFirstChild("Friendly")
+                    if Hesitation then
+                        Hesitation:Destroy()
+                    end
+                end
+            end
+        end
+    end
+})
+
+local function HighlightL()
+    for _, v in pairs(game.Workspace.Map.Doors:GetChildren()) do
+        if v:IsA("Model") then
+            local Hitbox = v:FindFirstChild("Hitbox")
+            local DoorV = v:FindFirstChild("Door")
+            if Hitbox then
+                if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - Hitbox.Position).Magnitude <= 40 then
+                    if not DoorV then
+                        DoorV = Instance.new("Highlight")
+                        DoorV.Name = "Door"
+                        DoorV.Adornee = v
+                        DoorV.Parent = v
+                    end
+                    DoorV.FillTransparency = 1
+                    DoorV.OutlineTransparency = 0
+                    if v:FindFirstChild("Grenade") and not v:GetAttribute("Opened") then
+                        DoorV.OutlineColor = Color3.new(1, 0, 0)
+                    elseif v:GetAttribute("Opened") then
+                        if DoorV then
+                            DoorV:Destroy()
+                        end
+                    elseif v:GetAttribute("Locked") ~= nil then
+                        if v:GetAttribute("Locked") then
+                            DoorV.OutlineColor = Color3.new(1, 1, 0)
+                        else
+                            DoorV.OutlineColor = Color3.new(0, 1, 0)
+                        end
+                    end
+                else
+                    if DoorV then
+                        DoorV:Destroy()
+                    end
+                end
+            end
+        end
+    end
+end
+
+VisualsTab:AddToggle('Door', {
+    Text = 'Door',
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            DoorsConnection = game:GetService("RunService").Stepped:Connect(HighlightL)
+        else
+            if DoorsConnection then
+                DoorsConnection:Disconnect()
+                DoorsConnection = nil
+            end
+            for _, v in pairs(game.Workspace.Map.Doors:GetChildren()) do
+                if v:IsA("Model") then
+                    local HL = v:FindFirstChild("Door")
+                    if HL then
+                        HL:Destroy()
+                    end
+                end
+            end
+        end
+    end
+})
+
+local MenuGroup = Tabs['UI Settings']:AddLeftGroupbox('Menu')
+MenuGroup:AddButton('Unload', function() Library:Unload() end)
+MenuGroup:AddLabel('Menu bind'):AddKeyPicker('MenuKeybind', { Default = 'H', NoUI = true, Text = 'Menu keybind' })
+Library.ToggleKeybind = Options.MenuKeybind
+ThemeManager:SetLibrary(Library)
+SaveManager:SetLibrary(Library)
+SaveManager:IgnoreThemeSettings()
+SaveManager:SetIgnoreIndexes({ 'MenuKeybind' })
+ThemeManager:SetFolder('Linoria')
+SaveManager:SetFolder('Linoria/HELLMET')
+SaveManager:BuildConfigSection(Tabs['UI Settings'])
+ThemeManager:ApplyToTab(Tabs['UI Settings'])
+SaveManager:LoadAutoloadConfig()
