@@ -21,6 +21,18 @@ local RightTabBox = Tabs.Main:AddRightTabbox()
 local FunctionsTab = LeftTabBox:AddTab('Functions')
 local VisualsTab = RightTabBox:AddTab('Visuals')
 
+local function FireproximitypromptL()
+    local success = pcall(function()
+        local prompt = Instance.new("ProximityPrompt")
+        fireproximityprompt(prompt, 50)
+    end)
+    return success
+end
+
+if FireproximitypromptL() then
+    FireProximityPromptAble = true
+end
+
 --// Functions \\--
 
 local AmmoV = {}
@@ -70,22 +82,24 @@ FunctionsTab:AddToggle('InfAmmo', {
     end
 })
 
-FunctionsTab:AddToggle('InstantInteract', {
-    Text = 'Instant Interact',
-    Default = false,
-    Callback = function(Value)
-        if Value then
-            InstantPrompt = game:GetService('ProximityPromptService').PromptButtonHoldBegan:Connect(function(prompt)
-                fireproximityprompt(prompt)
-            end)
-        else
-            if InstantPrompt then
-                InstantPrompt:Disconnect()
-                InstantPrompt = nil
+if FireProximityPromptAble then
+    FunctionsTab:AddToggle('InstantInteract', {
+        Text = 'Instant Interact',
+        Default = false,
+        Callback = function(Value)
+            if Value then
+                InstantPromptConnection = game:GetService('ProximityPromptService').PromptButtonHoldBegan:Connect(function(prompt)
+                    fireproximityprompt(prompt)
+                end)
+            else
+                if InstantPromptConnection then
+                    InstantPromptConnection:Disconnect()
+                    InstantPromptConnection = nil
+                end
             end
         end
-    end
-})
+    })
+end
 
 FunctionsTab:AddToggle('InstantLockPick', {
     Text = 'Instant Lockpick',
