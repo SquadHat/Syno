@@ -1,3 +1,7 @@
+if game:GetService("MarketplaceService"):GetProductInfo(game.placeId).Name ~= "HELLMET - Missions" then
+    return
+end
+
 local repo = 'https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/'
 
 local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
@@ -19,18 +23,21 @@ local Tabs = {
 local LeftTabBox = Tabs.Main:AddLeftTabbox()
 local RightTabBox = Tabs.Main:AddRightTabbox()
 local FunctionsTab = LeftTabBox:AddTab('Functions')
+local FunxtionsTab = LeftTabBox:AddTab('Stupid')
 local VisualsTab = RightTabBox:AddTab('Visuals')
 
-local function FireproximitypromptL()
-    local success = pcall(function()
-        local prompt = Instance.new("ProximityPrompt")
-        fireproximityprompt(prompt, 50)
+local function FireProximityPromptL()
+    local v = pcall(function()
+        local Prompt = Instance.new("ProximityPrompt")
+        fireproximityprompt(Prompt)
     end)
-    return success
+    return v
 end
 
-if FireproximitypromptL() then
+if FireProximityPromptL() then
     FireProximityPromptAble = true
+else
+    FireProximityPromptAble = false
 end
 
 --// Functions \\--
@@ -82,6 +89,44 @@ FunctionsTab:AddToggle('InfAmmo', {
     end
 })
 
+FunctionsTab:AddToggle('Recoil', {
+    Text = 'Reduce Recoil',
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            ReducedRecoilConnection = game:GetService("RunService").Stepped:Connect(function()
+                for _, WorldModel in ipairs(game.workspace.HeadCameraObjects.WorldModel:GetChildren()) do
+                    local HRP = WorldModel:FindFirstChild("HumanoidRootPart")
+                    if HRP then
+                        local LeftShoulder = HRP:FindFirstChild("Left Shoulder")
+                        local RightShoulder = HRP:FindFirstChild("Right Shoulder")
+                        if LeftShoulder and RightShoulder then
+                            LeftShoulder.Enabled = false
+                            RightShoulder.Enabled = false
+                        end
+                    end
+                end
+            end)
+        else
+            if ReducedRecoilConnection then
+                ReducedRecoilConnection:Disconnect()
+                ReducedRecoilConnection = nil
+            end
+            for _, WorldModel in ipairs(game.workspace.HeadCameraObjects.WorldModel:GetChildren()) do
+                local HRP = WorldModel:FindFirstChild("HumanoidRootPart")
+                if HRP then
+                    local LeftShoulder = HRP:FindFirstChild("Left Shoulder")
+                    local RightShoulder = HRP:FindFirstChild("Right Shoulder")
+                    if LeftShoulder and RightShoulder then
+                        LeftShoulder.Enabled = true
+                        RightShoulder.Enabled = true
+                    end
+                end
+            end
+        end
+    end
+})
+
 if FireProximityPromptAble then
     FunctionsTab:AddToggle('InstantInteract', {
         Text = 'Instant Interact',
@@ -126,6 +171,114 @@ FunctionsTab:AddToggle('InstantLockPick', {
                 for _, Tool in pairs(Char:GetChildren()) do
                     if Tool.Name == "Lockpick" and Tool:GetAttribute("BaseLockpickTime") then
                         Tool:SetAttribute('BaseLockpickTime', 2.5)
+                    end
+                end
+            end
+        end
+    end
+})
+
+--// Stupid \\--
+
+local CustomLaserColorToggle = FunxtionsTab:AddToggle('CustomLaserColor', {
+    Text = 'Custom Laser Color',
+    Default = false,
+    Callback = function(Value)
+        baphomet = true
+        local Laser = game.Workspace.HeadCameraObjects:FindFirstChild("Laser")
+        if Laser then
+            local HL = Laser:FindFirstChild("Highlight")
+            local LaserEnd = Laser:FindFirstChild("LaserEnd")
+            if Value then
+                if HL then
+                    HL.FillColor = Options.ColorPicker.Value
+                    if HLFillColorConnection then
+                        HLFillColorConnection:Disconnect()
+                        HLFillColorConnection = nil
+                    end
+                    HLFillColorConnection = HL:GetPropertyChangedSignal("FillColor"):Connect(function()
+                        HL.FillColor = Options.ColorPicker.Value
+                    end)
+                end
+                if LaserEnd then
+                    LaserEnd.Color = Options.ColorPicker.Value
+                    if CustomLaserColorConnection then
+                        CustomLaserColorConnection:Disconnect()
+                        CustomLaserColorConnection = nil
+                    end
+                    CustomLaserColorConnection = LaserEnd:GetPropertyChangedSignal("Color"):Connect(function()
+                        LaserEnd.Color = Options.ColorPicker.Value
+                        local Attachment = LaserEnd:FindFirstChild("Attachment")
+                        if Attachment then
+                            local PointLight = Attachment:FindFirstChild("PointLight")
+                            if PointLight then
+                                PointLight.Color = Options.ColorPicker.Value
+                            end
+                        end
+                    end)
+                end
+            else
+                if HLFillColorConnection then
+                    HLFillColorConnection:Disconnect()
+                    HLFillColorConnection = nil
+                end
+                if CustomLaserColorConnection then
+                    CustomLaserColorConnection:Disconnect()
+                    CustomLaserColorConnection = nil
+                    if LaserEnd then
+                        local Attachment = LaserEnd:FindFirstChild("Attachment")
+                        if Attachment then
+                            local PointLight = Attachment:FindFirstChild("PointLight")
+                            if PointLight then
+                                coroutine.wrap(function()
+                                    wait(0.01)
+                                    PointLight.Color = LaserEnd.Color
+                                end)()
+                            end
+                        end
+                    end
+                end
+                baphomet = false
+            end
+        end
+    end
+})
+
+CustomLaserColorToggle:AddColorPicker('ColorPicker', {
+    Default = (function()
+        local ItemsEquipped = game.Players.LocalPlayer:FindFirstChild("ItemsEquipped")
+        if ItemsEquipped then
+            local LaserColor = ItemsEquipped:FindFirstChild("LaserColor")
+            if LaserColor and LaserColor:IsA("StringValue") then
+                local Color = LaserColor.Value:split(",")
+                return Color3.new(
+                    tonumber(Color[1]) or 1,
+                    tonumber(Color[2]) or 0,
+                    tonumber(Color[3]) or 0
+                )
+            end
+        end
+        return Color3.new(1, 0, 0)
+    end)(),
+    Title = 'Laser Color',
+    Transparency = 0,
+    Callback = function(Value)
+        if baphomet then
+            local Laser = game.Workspace.HeadCameraObjects:FindFirstChild("Laser")
+            if Laser then
+                local HL = Laser:FindFirstChild("Highlight")
+                local LaserEnd = Laser:FindFirstChild("LaserEnd")
+                if HL then
+                    HL.FillColor = Value
+                end
+                if LaserEnd then
+                    LaserEnd.Color = Value
+                    local Attachment = LaserEnd:FindFirstChild("Attachment")
+                    if Attachment then
+                        local PointLight = Attachment:FindFirstChild("PointLight")
+                        if PointLight then
+                            PointLight.Color = Value
+                        end
                     end
                 end
             end
@@ -318,6 +471,8 @@ VisualsTab:AddToggle('Door', {
         end
     end
 })
+
+Library:Notify("Roblox - " .. game:GetService("MarketplaceService"):GetProductInfo(game.placeId).Name, 2.5)
 
 local MenuGroup = Tabs['UI Settings']:AddLeftGroupbox('Menu')
 MenuGroup:AddButton('Unload', function() Library:Unload() end)
