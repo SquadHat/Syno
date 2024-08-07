@@ -21,9 +21,11 @@ local Tabs = {
 }
 
 local LeftTabBox = Tabs.Main:AddLeftTabbox()
+local LeftTabBoxV = Tabs.Main:AddLeftTabbox()
 local RightTabBox = Tabs.Main:AddRightTabbox()
 local FunctionsTab = LeftTabBox:AddTab('Functions')
 local FunxtionsTab = LeftTabBox:AddTab('Stupid')
+local GunModTab = LeftTabBoxV:AddTab('Modifications')
 local VisualsTab = RightTabBox:AddTab('Visuals')
 
 local function FireProximityPromptL()
@@ -286,6 +288,80 @@ CustomLaserColorToggle:AddColorPicker('ColorPicker', {
     end
 })
 
+--// Modifications \\--
+
+local ToolNameLabel = GunModTab:AddLabel("N/A")
+
+GunModTab:AddDivider()
+
+local AmmoLabel = GunModTab:AddLabel("Ammo : N/A")
+local BaseDamageLabel = GunModTab:AddLabel("Base Damage : N/A")
+local FirerateLabel = GunModTab:AddLabel("Firerate : N/A")
+local ClipSizeLabel = GunModTab:AddLabel("Clip Size : N/A")
+local ReloadTimeLabel = GunModTab:AddLabel("Reload Time : N/A")
+local DamageDecreaseLabel = GunModTab:AddLabel("Damage Decrease : N/A")
+local HeadshotMultiplierLabel = GunModTab:AddLabel("Headshot Multiplier : N/A")
+
+local function ToolINFO()
+    local Tool = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool")
+    if not Tool then
+        return
+    end
+    local Ammo = Tool:GetAttribute("Ammo")
+    local BaseDamage = Tool:GetAttribute("BaseDamage")
+    local Firerate = Tool:GetAttribute("Firerate")
+    local ClipSize = Tool:GetAttribute("ClipSize")
+    local ReloadTime = Tool:GetAttribute("TacticalReloadTime")
+    local HeadshotMultiplier = Tool:GetAttribute("HeadshotMultiplier")
+    local DamageDecrease = Tool:GetAttribute("DamageDecreaseAdd")
+    ToolNameLabel:SetText(Tool.Name)
+    AmmoLabel:SetText("Ammo : " .. tostring(Ammo))
+    BaseDamageLabel:SetText("Base Damage : " .. tostring(BaseDamage))
+    FirerateLabel:SetText("Firerate : " .. tostring(Firerate))
+    ClipSizeLabel:SetText("Clip Size : " .. tostring(ClipSize))
+    ReloadTimeLabel:SetText("Reload Time : " .. tostring(ReloadTime))
+    DamageDecreaseLabel:SetText("Damage Decrease : " .. tostring(DamageDecrease))
+    HeadshotMultiplierLabel:SetText("Headshot Multiplier : " .. tostring(HeadshotMultiplier))
+end
+
+ToolConnection = game:GetService("RunService").Stepped:Connect(ToolINFO)
+
+GunModTab:AddDivider()
+
+local Attributes = {['Ammo'] = 'Ammo', ['Base Damage'] = 'BaseDamage', ['Firerate'] = 'Firerate', ['Headshot Multiplier'] = 'HeadshotMultiplier', ['Damage Decrease'] = 'DamageDecrease'}
+
+GunModTab:AddDropdown('ModDropdown', {
+    Text = 'Modification',
+    Values = { 'Ammo', 'Base Damage', 'Firerate', 'Headshot Multiplier', 'Damage Decrease' },
+    Default = '',
+    Multi = true,
+    Callback = function(Value)
+    end
+})
+
+GunModTab:AddInput('ModInput', {
+    Text = '',
+    Default = '',
+    Numeric = false,
+    Callback = function(Value)
+    end
+})
+
+GunModTab:AddButton({
+    Text = 'Apply',
+    Func = function()
+        local Tool = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool")
+        if not Tool then return end
+        local ValueNum = tonumber(Options.ModInput.Value)
+        if not ValueNum then return end
+        for V, VV in next, Options.ModDropdown.Value do
+            if VV then
+                Tool:SetAttribute(Attributes[V], ValueNum)
+            end
+        end
+    end
+})
+
 --// Visuals \\--
 
 VisualsTab:AddToggle('Objective', {
@@ -473,6 +549,13 @@ VisualsTab:AddToggle('Door', {
 })
 
 Library:Notify("Roblox - " .. game:GetService("MarketplaceService"):GetProductInfo(game.placeId).Name, 2.5)
+
+Library:OnUnload(function()
+    if ToolConnection then
+        ToolConnection:Disconnect()
+        ToolConnection = nil
+    end
+end)
 
 local MenuGroup = Tabs['UI Settings']:AddLeftGroupbox('Menu')
 MenuGroup:AddButton('Unload', function() Library:Unload() end)
